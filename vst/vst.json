@@ -1,0 +1,10 @@
+{
+  "name": "Euclidier",
+  "vendor": "sd88me",
+  "uid": "EqDr",
+  "version": 1000,
+  "so": "euclidier.so",
+  "module": "module.json",
+  "layout": "layout.conf",
+  "_comment": "MIDI generator with host-side glue (control-socket keys, not DSP params) -- see docs/PORTING.md classification 0/1. vst.json/module.json here only feed tools/gen_vst.py for params.h + the skin. The actual plugin is euclidier_vst.cpp, built by this port's own build.sh: it spawns the existing 'euclidier' standalone binary (already deployed at /media/662522/AddOns/Euclidier/euclidier per ../DESIGN.md) as a child process and talks to it over its existing Unix control socket + its own ALSA seq virtual MIDI ports, instead of linking the engine in-process (euclidier.cpp is a monolithic standalone app, not a library like acid_core.c)."
+}
