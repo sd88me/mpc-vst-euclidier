@@ -7,6 +7,7 @@
 #include <string.h>
 #include <math.h>
 #include <unistd.h>
+#include "params.h"
 
 typedef struct AEffect AEffect;
 typedef intptr_t (*cb)(AEffect *, int32_t, int32_t, intptr_t, void *, float);
@@ -33,8 +34,10 @@ enum { kPlaying = 1 << 1, kPpq = 1 << 9, kTempo = 1 << 10 };
 extern AEffect *VSTPluginMain(cb);
 
 static TI g_ti;
+static int automated[NPARAMS];
 static intptr_t host(AEffect *e, int32_t op, int32_t idx, intptr_t v, void *p, float o) {
-    (void)e; (void)idx; (void)v; (void)p; (void)o;
+    (void)e; (void)v; (void)p; (void)o;
+    if (op == 0 && idx >= 0 && idx < NPARAMS) automated[idx]++;   /* audioMasterAutomate */
     if (op == 7) return (intptr_t)&g_ti;   /* audioMasterGetTime */
     return 0;
 }
@@ -77,15 +80,32 @@ int main(void) {
     }
     printf("400 blocks of transport fed with no crash\n");
 
+    /* popup (wrapper/popup.h): a tap opens it, a Q-Link nudge leaves it open, a pick closes it and
+     * tells the host once, and the flag stays out of the chunk */
+    int fails = 0;
+    for (int i = 0; i < NPARAMS; i++) {
+        if (PARAMS[i].popup_of < 0) continue;
+        int t = PARAMS[i].popup_of, no = PARAMS[t].nopts;
+        a->setP(a, i, 1.0f);
+        int opened = a->getP(a, i) > 0.5f;
+        a->setP(a, t, 0.5f / (no - 1)); a->pr(a, 0, out, 128);
+        int kept = a->getP(a, i) > 0.5f && !automated[i];
+        a->setP(a, t, 1.0f); a->pr(a, 0, out, 128);
+        int closed = a->getP(a, i) < 0.5f && automated[i] == 1;
+        printf("popup %s: opens %d, nudge keeps it open %d, pick closes it %d\n", PARAMS[i].key, opened, kept, closed);
+        fails += !(opened && kept && closed);
+    }
+
     /* chunk round-trip */
     void *chunk = 0;
     intptr_t n = a->d(a, 23, 0, 0, &chunk, 0);
     printf("chunk %ld bytes: %.160s...\n", (long)n, (char *)chunk);
     if (n > 0) b->d(b, 24, 0, n, chunk, 0);
     printf("chunk applied to instance b with no crash\n");
+    if (n > 0 && strstr((char *)chunk, "__open")) { printf("FAIL popup flag saved in the chunk\n"); fails++; }
 
     a->d(a, 1, 0, 0, 0, 0);
     b->d(b, 1, 0, 0, 0, 0);
-    printf("OK\n");
-    return 0;
+    printf("%s\n", fails ? "FAILED" : "OK");
+    return fails ? 1 : 0;
 }

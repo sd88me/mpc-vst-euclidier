@@ -26,6 +26,8 @@ docker run --rm -u "$U" -v "$PWD":/w -v "$MPC_VST":/mv:ro -w /w gcc:12 \
 docker run --rm -u "$U" -v "$PWD":/w -v "$MPC_VST":/mv:ro -w /w python:3.11-slim sh -c \
   "pip install -q --no-warn-script-location --target /tmp/p pillow >/dev/null 2>&1; PYTHONPATH=/tmp/p python3 /mv/tools/gen_vst.py vst.json"
 
+cp "$MPC_VST/wrapper/popup.h" build/   # popup open-flag handling shared with mpc-vst's own wrapper
+
 # 3. x86 build of the real standalone engine (for host_test only -- ASan, no strip)
 docker run --rm -v "$PWD/..":/b -w /b gcc:12 bash -euxc '
   apt-get update -qq && apt-get install -y -qq libasound2-dev >/dev/null

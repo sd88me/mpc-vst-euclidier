@@ -61,6 +61,7 @@
 #endif
 
 #include "params.h"
+#include "popup.h"    /* mpc-vst-plugins wrapper/popup.h, copied into build/ by build.sh */
 
 extern char **environ;
 
@@ -153,6 +154,7 @@ struct Plugin {
     std::string sockpath;
     pid_t child = -1;
     volatile char release[NPARAMS] = {0};
+    float open[NPARAMS] = {0};     /* popup "open" flags (popup.h): wrapper-only, never sent or saved */
     double last_ppq = 0.0;
     bool was_playing = false;
 #ifndef NO_ALSA
@@ -224,7 +226,7 @@ static void io_worker(Plugin *w) {
         }
         if (refresh) {
             for (int i = 0; i < NPARAMS; i++) {
-                if (PARAMS[i].momentary) continue;
+                if (PARAMS[i].momentary || popup_is(i)) continue;
                 w->cache[i].store(get_norm_blocking(w->sockpath, i));
             }
         }
@@ -391,6 +393,7 @@ static void setParameter(AEffect *e, int32_t i, float n) {
     Plugin *w = (Plugin *)e->object;
     if (i < 0 || i >= NPARAMS) return;
     const param_t *p = &PARAMS[i];
+    if (popup_set(w->open, i, n)) return;
     if (p->momentary) {
         if (n > 0.5f) {
             queue_set(w, p->key, "1", triggers_refresh(p->key));
@@ -399,6 +402,7 @@ static void setParameter(AEffect *e, int32_t i, float n) {
         return;
     }
     char buf[32];
+    bool nudge = false;
     if (p->nopts > 1) {
         float pos = clamp01(n) * (p->nopts - 1);
         if (std::fabs(pos - std::round(pos)) > 0.001f) {
@@ -407,17 +411,19 @@ static void setParameter(AEffect *e, int32_t i, float n) {
             if (idx < 0) idx = 0;
             if (idx > p->nopts - 1) idx = p->nopts - 1;
             n = (float)idx / (p->nopts - 1);
+            nudge = true;
         }
     }
     w->cache[i].store(n);
     norm_to_str(p, n, buf, sizeof buf);
     queue_set(w, p->key, buf, false);
+    if (!nudge) popup_picked(w->open, w->release, i);   /* a list pick closes it; a Q-Link nudge doesn't */
 }
 
 static float getParameter(AEffect *e, int32_t i) {
     Plugin *w = (Plugin *)e->object;
     if (i < 0 || i >= NPARAMS) return 0.0f;
-    return w->cache[i].load();
+    return popup_is(i) ? w->open[i] : w->cache[i].load();
 }
 
 static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void *p, float o) {
@@ -451,7 +457,7 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
         const param_t *pp = &PARAMS[idx];
         if (pp->momentary) { copy_str(p, "", 24); return 1; }
         if (pp->nopts) {
-            int k = (int)std::lround(w->cache[idx].load() * (pp->nopts - 1));
+            int k = (int)std::lround((popup_is(idx) ? w->open[idx] : w->cache[idx].load()) * (pp->nopts - 1));
             copy_str(p, pp->opts[k], 24);
         } else {
             char buf[32];
@@ -469,7 +475,7 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
         /* From cache -- no socket round-trip, consistent with get/setParameter. */
         std::string s;
         for (int i = 0; i < NPARAMS; i++) {
-            if (PARAMS[i].momentary) continue;
+            if (PARAMS[i].momentary || popup_is(i)) continue;
             char buf[32];
             norm_to_str(&PARAMS[i], w->cache[i].load(), buf, sizeof buf);
             s += PARAMS[i].key; s += '='; s += buf; s += ';';
@@ -515,7 +521,7 @@ extern "C" __attribute__((visibility("default"))) AEffect *VSTPluginMain(audioMa
      * budget -- bench.sh measured "open 1105.6 ms" already, see this file's
      * header comment); every SET/GET after this is cache-only + async. */
     for (int i = 0; i < NPARAMS; i++)
-        if (!PARAMS[i].momentary) w->cache[i].store(get_norm_blocking(w->sockpath, i));
+        if (!PARAMS[i].momentary && !popup_is(i)) w->cache[i].store(get_norm_blocking(w->sockpath, i));
     w->io_thread = std::thread(io_worker, w);
 
     AEffect *e = &w->fx;
