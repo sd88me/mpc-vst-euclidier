@@ -96,6 +96,46 @@ int main(void) {
         fails += !(opened && kept && closed);
     }
 
+    /* step displays: the fake engine's lane 1 has 12 steps -> the 16-slot class shows 12 cells, the 8/4/32 classes
+     * stay hidden, the play-head cell follows, the lane info text comes through, and sel steps */
+    int ik[64], ni = 0, i16[32], n16 = 0, info = -1, nsel = -1, nnext = -1;
+    (void)ik; (void)ni;
+    for (int i = 0; i < NPARAMS; i++) {
+        int c, s2;
+        if (sscanf(PARAMS[i].key, "g1_16_%d", &s2) == 1 && n16 < 32) i16[n16++] = i;
+        if (!strcmp(PARAMS[i].key, "l1_info")) info = i;
+        if (!strcmp(PARAMS[i].key, "sel")) nsel = i;
+        if (!strcmp(PARAMS[i].key, "sel_next")) nnext = i;
+    }
+    a->setP(a, 3, 10.0f / 30.0f);   /* l1_steps = 12 (range 2..32) */
+    int moved = 0, last = -1;
+    for (int k = 0; k < 120; k++) {
+        usleep(10000);
+        a->pr(a, 0, out, 128);
+        g_ti.ppqPos += ppq_per_block;
+        for (int j = 0; j < n16; j++)   /* the cell showing the play-head: option 3 or 4 of 5 */
+            if (a->getP(a, i16[j]) > 0.7f && j != last) { last = j; moved++; }
+    }
+    int shown = 0, wrong = 0;
+    for (int j = 0; j < n16; j++) { if (a->getP(a, i16[j]) > 0.0f) shown++; }
+    char t1[64]; a->d(a, 7, info, 0, t1, 0);
+    printf("lane 1 at 12 steps: 16-slot cells shown %d (expect 12), ring moved %d times, info '%s' (expect 12/4 SH0)\n", shown, moved, t1);
+    for (int i = 0; i < NPARAMS; i++) { int c, s2; if (sscanf(PARAMS[i].key, "g1_%d_%d", &c, &s2) == 2 && c != 16 && a->getP(a, i) > 0.0f) wrong++; }
+    fails += !(shown == 12 && moved > 3 && !wrong && !strcmp(t1, "12/4 SH0"));
+    a->setP(a, nnext, 1.0f);
+    for (int k = 0; k < 20; k++) { usleep(10000); a->pr(a, 0, out, 128); }
+    char t2[64]; a->d(a, 7, nsel, 0, t2, 0);
+    printf("sel_next -> %s (expect LANE 2)\n", t2);
+    fails += !!strcmp(t2, "LANE 2");
+
+    /* all_drum: every lane's mode (l<N>_mode, option 1 = DRUM) */
+    int alld = -1; for (int i = 0; i < NPARAMS; i++) if (!strcmp(PARAMS[i].key, "all_drum")) alld = i;
+    a->setP(a, alld, 1.0f);
+    int drums = 0;
+    for (int l = 1; l <= 8; l++) for (int i = 0; i < NPARAMS; i++) { char k[16]; snprintf(k, sizeof k, "l%d_mode", l); if (!strcmp(PARAMS[i].key, k) && a->getP(a, i) > 0.9f) drums++; }
+    printf("all_drum -> %d of 8 lanes in DRUM mode\n", drums);
+    fails += drums != 8;
+
     /* chunk round-trip */
     void *chunk = 0;
     intptr_t n = a->d(a, 23, 0, 0, &chunk, 0);

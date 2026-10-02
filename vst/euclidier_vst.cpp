@@ -35,6 +35,7 @@
  * work -- moving it off is the fix (docs/PORTING.md "Bench" + this file's own
  * bench run, 2026-09-24).
  * ========================================================================== */
+#include <algorithm>
 #include <atomic>
 #include <cmath>
 #include <condition_variable>
@@ -109,7 +110,8 @@ enum { effFlagsCanReplacing = 1 << 4, effFlagsProgramChunks = 1 << 5, effFlagsIs
 
 static FILE *g_log;
 #define LOG(...) do { if (g_log) { std::fprintf(g_log, __VA_ARGS__); std::fflush(g_log); } } while (0)
-static std::atomic<int> g_instance_count{0};
+static std::atomic<int> g_instance_count{0};   /* ALSA client names */
+static std::atomic<int> g_sock_seq{0};         /* control-socket paths: counted even when ALSA is unavailable */
 
 /* ---- default location of the standalone engine binary, override with
  * EUCLIDIER_BIN for host testing. ../DESIGN.md: already deployed at this path
@@ -153,7 +155,7 @@ struct Plugin {
     audioMasterCallback master;
     std::string sockpath;
     pid_t child = -1;
-    volatile char release[NPARAMS] = {0};
+    volatile int release[NPARAMS] = {0};
     float open[NPARAMS] = {0};     /* popup "open" flags (popup.h): wrapper-only, never sent or saved */
     double last_ppq = 0.0;
     bool was_playing = false;
@@ -163,6 +165,15 @@ struct Plugin {
     int dest_client = -1, dest_port = -1;
 #endif
     char chunk[4096] = {0};
+
+    /* Step displays (make_skin.py): per-lane pattern views polled by the worker, turned into the values of the
+     * display-only cell/ring params, and pushed to the host from processReplacing when they change. */
+    struct LaneView { int steps = 0, play = -1, enabled = 0, selected = 0; int bits[64] = {0}; };
+    LaneView lv[8];
+    std::mutex lvmu;                      /* guards lv[] and text[] */
+    std::string text[NPARAMS];            /* string_display params (lane info) */
+    std::atomic<float> told[NPARAMS];     /* what the host last knew for each param (-1: nothing yet); a cache change that differs is pushed */
+    std::atomic<bool> playing{false};
 
     /* Cache + async worker: setParameter/getParameter/effGetParamDisplay only
      * ever touch `cache` (see file header comment). */
@@ -193,6 +204,56 @@ static float str_to_norm(const param_t *p, const std::string &s) {
     }
     return p->max > p->min ? clamp01((float)((std::atof(s.c_str()) - p->min) / (p->max - p->min))) : 0.0f;
 }
+
+/* ---- display-only step-display params (names from make_skin.py) -------------- */
+enum VKind : unsigned char { V_NONE = 0, V_GCELL, V_CCELL, V_INFO };
+struct VInfo { VKind kind = V_NONE; int lane = 0, cap = 0, slot = 0; };
+static VInfo g_v[NPARAMS];
+static std::vector<int> g_vlist;                       /* display-only params, lane info first */
+static std::vector<int> g_gcaps, g_ccaps;              /* size-class capacities, ascending */
+static std::unordered_map<std::string, int> g_kidx;    /* key -> param index */
+static void add_cap(std::vector<int> &v, int c) { if (std::find(v.begin(), v.end(), c) == v.end()) v.push_back(c); }
+static void build_vtable() {
+    std::vector<int> infos, cells;
+    for (int i = 0; i < NPARAMS; i++) {
+        const char *k = PARAMS[i].key;
+        int a, b, c;
+        g_kidx[k] = i;
+        VInfo &v = g_v[i];
+        if (std::sscanf(k, "g%d_%d_%d", &a, &b, &c) == 3 && k[0] == 'g') { v = {V_GCELL, a - 1, b, c}; add_cap(g_gcaps, b); cells.push_back(i); }
+        else if (std::sscanf(k, "c%d_%d", &a, &b) == 2 && k[0] == 'c') { v = {V_CCELL, 0, a, b}; add_cap(g_ccaps, a); cells.push_back(i); }
+        else if (std::sscanf(k, "l%d_info", &a) == 1 && std::strstr(k, "_info")) { v = {V_INFO, a - 1, 0, 0}; infos.push_back(i); }
+    }
+    g_vlist = infos;
+    g_vlist.insert(g_vlist.end(), cells.begin(), cells.end());
+    std::sort(g_gcaps.begin(), g_gcaps.end());
+    std::sort(g_ccaps.begin(), g_ccaps.end());
+}
+static bool is_virtual(int i) { return g_v[i].kind != V_NONE; }
+static int class_for(const std::vector<int> &caps, int n) {
+    for (int c : caps) if (c >= n) return c;
+    return caps.empty() ? 0 : caps.back();
+}
+/* slot[0..cap): 0 hidden / 1 off / 2 on for `n` steps (bits[]) shown in `cap` slots. `contiguous`: a lane row, one
+ * cell per step from the left while n <= cap; otherwise the steps are spread round the circle (several steps
+ * sharing a slot when n > cap light it if any is on). */
+static void fill_slots(const int *bits, int n, int cap, bool contiguous, int *slot) {
+    for (int s = 0; s < cap; s++) slot[s] = 0;
+    if (n <= 0 || cap <= 0) return;
+    if (contiguous && n <= cap) { for (int s = 0; s < n; s++) slot[s] = 1 + (bits[s] ? 1 : 0); return; }
+    for (int s = 0; s < cap; s++) slot[s] = 1;
+    for (int i = 0; i < n && i < 64; i++) if (bits[i]) slot[(i * cap) / n] = 2;
+    if (n < cap) {   /* only the slots a step lands on exist */
+        int used[64] = {0};
+        for (int i = 0; i < n; i++) used[(i * cap) / n] = 1;
+        for (int s = 0; s < cap; s++) if (!used[s]) slot[s] = 0;
+    }
+}
+static int play_slot(int play, int n, int cap, bool contiguous) {
+    if (play < 0 || play >= n) return -1;
+    return contiguous && n <= cap ? play : (play * cap) / n;
+}
+
 /* Blocking GET, used only off the hot path: initial cache fill and the worker
  * thread's post-trigger refresh (see io_worker). Never called from
  * setParameter/getParameter/effGetParamDisplay. */
@@ -204,6 +265,78 @@ static float get_norm_blocking(const std::string &sockpath, int i) {
 }
 
 /* ---------------------------------------------------------------------------
+ * Step displays: poll every lane's pattern, derive the display-only params' values.
+ * "l<N>_pattern" -> "steps|bits|play|loop|enabled|selected" (euclidier.cpp ctrlGet).
+ * ------------------------------------------------------------------------- */
+static void parse_pattern(const std::string &r, Plugin::LaneView &L) {
+    L = Plugin::LaneView();
+    size_t p0 = r.find('|');
+    if (p0 == std::string::npos) return;
+    L.steps = std::atoi(r.c_str());
+    if (L.steps > 64) L.steps = 64;
+    size_t p1 = r.find('|', p0 + 1);
+    std::string bits = r.substr(p0 + 1, p1 == std::string::npos ? std::string::npos : p1 - p0 - 1);
+    int k = 0;
+    for (size_t i = 0; i < bits.size() && k < 64; i++) if (bits[i] == '0' || bits[i] == '1') L.bits[k++] = bits[i] == '1';
+    if (k < L.steps) L.steps = k;
+    if (p1 == std::string::npos) return;
+    int f[4] = {-1, 0, 0, 0}, nf = 0;   /* play, loop, enabled, selected */
+    const char *q = r.c_str() + p1 + 1;
+    while (nf < 4 && *q) { f[nf++] = std::atoi(q); const char *b = std::strchr(q, '|'); if (!b) break; q = b + 1; }
+    L.play = f[0]; L.enabled = f[2]; L.selected = f[3];
+}
+static float idx_norm(int idx, int nopts) { return nopts > 1 ? (float)idx / (nopts - 1) : 0.0f; }
+static void compute_views(Plugin *w) {
+    /* a cell's value: 0 hidden, 1 off, 2 on, +2 while the play-head is on it (options "-", OFF, ON, OFF >, ON >) */
+    Plugin::LaneView lv[8];
+    bool playing = w->playing.load();
+    { std::lock_guard<std::mutex> lk(w->lvmu); for (int i = 0; i < 8; i++) lv[i] = w->lv[i]; }
+    int sel = 0;
+    for (int i = 0; i < 8; i++) if (lv[i].selected) sel = i;
+    int gcls[8], gslot[8][64], ccls = class_for(g_ccaps, lv[sel].steps), cslot[64];
+    for (int n = 0; n < 8; n++) {
+        gcls[n] = class_for(g_gcaps, lv[n].steps);
+        fill_slots(lv[n].bits, lv[n].steps, gcls[n], true, gslot[n]);
+        int ps = playing && lv[n].enabled ? play_slot(lv[n].play, lv[n].steps, gcls[n], true) : -1;
+        if (ps >= 0 && gslot[n][ps] && gcls[n] <= 16) gslot[n][ps] += 2;   /* the 32-step row has no play-head state (make_skin.py GRID_CUR_MAX) */
+    }
+    fill_slots(lv[sel].bits, lv[sel].steps, ccls, false, cslot);
+    int cps = playing && lv[sel].enabled ? play_slot(lv[sel].play, lv[sel].steps, ccls, false) : -1;
+    if (cps >= 0 && cslot[cps]) cslot[cps] += 2;
+    for (int i : g_vlist) {
+        const VInfo &v = g_v[i];
+        float val;
+        if (v.kind == V_GCELL) val = v.cap == gcls[v.lane] ? idx_norm(gslot[v.lane][v.slot], PARAMS[i].nopts) : 0.0f;
+        else if (v.kind == V_CCELL) val = v.cap == ccls ? idx_norm(cslot[v.slot], PARAMS[i].nopts) : 0.0f;
+        else continue;
+        w->cache[i].store(val);
+    }
+}
+static void poll_views(Plugin *w, int tick) {
+    for (int n = 0; n < 8; n++) {
+        std::string r;
+        char k[24];
+        std::snprintf(k, sizeof k, "l%d_pattern", n + 1);
+        if (ctrl_request(w->sockpath, std::string("GET ") + k, r)) {
+            Plugin::LaneView L;
+            parse_pattern(r, L);
+            std::lock_guard<std::mutex> lk(w->lvmu);
+            w->lv[n] = L;
+        }
+        if (tick % 8 == 0) {
+            std::snprintf(k, sizeof k, "l%d_info", n + 1);
+            if (ctrl_request(w->sockpath, std::string("GET ") + k, r)) {
+                char key[24];
+                std::snprintf(key, sizeof key, "l%d_info", n + 1);
+                auto it = g_kidx.find(key);
+                if (it != g_kidx.end()) { std::lock_guard<std::mutex> lk(w->lvmu); w->text[it->second] = r; }
+            }
+        }
+    }
+    compute_views(w);
+}
+
+/* ---------------------------------------------------------------------------
  * Async worker: drains coalesced SET requests and, after a trigger (preset
  * load/save, randomize -- anything that changes engine state on its own, not
  * just the one key SET), re-GETs every param to catch what the engine changed
@@ -211,8 +344,8 @@ static float get_norm_blocking(const std::string &sockpath, int i) {
  * ------------------------------------------------------------------------- */
 static void io_worker(Plugin *w) {
     std::unique_lock<std::mutex> lk(w->qmu);
-    for (;;) {
-        w->qcv.wait(lk, [w] { return w->stop_io || !w->pending.empty() || w->want_refresh; });
+    for (int tick = 0;; tick++) {
+        w->qcv.wait_for(lk, std::chrono::milliseconds(30), [w] { return w->stop_io || !w->pending.empty() || w->want_refresh; });
         if (w->stop_io) return;
         auto todo = std::move(w->pending);
         w->pending.clear();
@@ -226,10 +359,11 @@ static void io_worker(Plugin *w) {
         }
         if (refresh) {
             for (int i = 0; i < NPARAMS; i++) {
-                if (PARAMS[i].momentary || popup_is(i)) continue;
+                if (PARAMS[i].momentary || popup_is(i) || is_virtual(i)) continue;
                 w->cache[i].store(get_norm_blocking(w->sockpath, i));
             }
         }
+        poll_views(w, tick);
         lk.lock();
     }
 }
@@ -358,6 +492,7 @@ static void feed_transport(Plugin *w) {
     if (playing && !w->was_playing) { w->last_ppq = ti->ppqPos; alsa_send_byte(w, 0xFA); }
     else if (!playing && w->was_playing) alsa_send_byte(w, 0xFC);
     w->was_playing = playing;
+    w->playing.store(playing);
 
     if (playing && ti) {
         const double step = 1.0 / 24.0;
@@ -376,6 +511,17 @@ static void processReplacing(AEffect *e, float **in, float **out, int32_t n) {
     (void)in;
     Plugin *w = (Plugin *)e->object;
     feed_transport(w);
+    int budget = 96;   /* host calls per block: a lane resize touches ~100 cells, spread over a few blocks */
+    for (int i : g_vlist) {   /* display-only params first, then any real param the engine changed behind the host's back */
+        if (budget <= 0) break;
+        float v = w->cache[i].load();
+        if (v != w->told[i].load()) { w->told[i].store(v); w->master(&w->fx, audioMasterAutomate, i, 0, 0, v); budget--; }
+    }
+    for (int i = 0; i < NPARAMS && budget > 0; i++) {
+        if (is_virtual(i) || PARAMS[i].momentary || popup_is(i)) continue;
+        float v = w->cache[i].load();
+        if (v != w->told[i].load()) { w->told[i].store(v); w->master(&w->fx, audioMasterAutomate, i, 0, 0, v); budget--; }
+    }
     for (int i = 0; i < NPARAMS; i++)
         if (w->release[i]) { w->release[i] = 0; w->master(&w->fx, audioMasterAutomate, i, 0, 0, 0.0f); }
     for (int32_t i = 0; i < n; i++) out[0][i] = out[1][i] = 0.0f;   /* MIDI generator: no audio */
@@ -389,11 +535,58 @@ static bool triggers_refresh(const char *key) {
     return !std::strcmp(key, "preset_load") || !std::strcmp(key, "rand_go");
 }
 
+/* Keep the selected lane's "sel_<x>" and "l<N>_<x>" caches equal (the engine has one value for both). */
+static void mirror_sel(Plugin *w, int i, float n) {
+    const char *k = PARAMS[i].key;
+    auto si = g_kidx.find("sel");
+    if (si == g_kidx.end()) return;
+    int sel = (int)std::lround(w->cache[si->second].load() * 7.0f);
+    std::string other;
+    if (!std::strncmp(k, "sel_", 4)) other = "l" + std::to_string(sel + 1) + "_" + (k + 4);
+    else if (k[0] == 'l' && k[1] >= '1' && k[1] <= '8' && k[2] == '_' && k[1] - '1' == sel) other = std::string("sel_") + (k + 3);
+    else return;
+    auto it = g_kidx.find(other);
+    if (it != g_kidx.end()) w->cache[it->second].store(n);
+}
+static int value_of(Plugin *w, int i) {   /* a param's current value in its own domain */
+    const param_t *p = &PARAMS[i];
+    float n = w->cache[i].load();
+    return p->nopts ? (int)std::lround(n * (p->nopts - 1)) : (int)std::lround(p->min + (p->max - p->min) * n);
+}
 static void setParameter(AEffect *e, int32_t i, float n) {
     Plugin *w = (Plugin *)e->object;
     if (i < 0 || i >= NPARAMS) return;
     const param_t *p = &PARAMS[i];
+    if (is_virtual(i)) return;   /* display only */
     if (popup_set(w->open, i, n)) return;
+    if (p->momentary && p->step_target >= 0) {   /* a stepper arrow: nudge another param by step_delta */
+        if (n > 0.5f) {
+            const param_t *t = &PARAMS[p->step_target];
+            int lo = t->nopts ? 0 : (int)t->min, hi = t->nopts ? t->nopts - 1 : (int)t->max;
+            int nv = std::min(hi, std::max(lo, value_of(w, p->step_target) + (int)p->step_delta));
+            float tn = t->nopts ? idx_norm(nv, t->nopts) : (float)(nv - t->min) / (t->max - t->min);
+            char buf[32];
+            norm_to_str(t, tn, buf, sizeof buf);
+            w->cache[p->step_target].store(tn);   /* told[] stays: the host hears the new value from processReplacing */
+            mirror_sel(w, p->step_target, tn);
+            queue_set(w, t->key, buf, !std::strcmp(t->key, "sel"));   /* a new lane: re-read the sel_* values */
+            w->release[i] = 1;
+        }
+        return;
+    }
+    if (p->momentary && !std::strcmp(p->key, "all_drum")) {   /* every lane to DRUM mode; the engine then moves each note to its drum note */
+        if (n > 0.5f) {
+            for (int l = 1; l <= 8; l++) {
+                auto it = g_kidx.find("l" + std::to_string(l) + "_mode");
+                if (it == g_kidx.end()) continue;
+                w->cache[it->second].store(1.0f);
+                mirror_sel(w, it->second, 1.0f);
+                queue_set(w, PARAMS[it->second].key, "1", l == 8);   /* one re-read after the last */
+            }
+            w->release[i] = 1;
+        }
+        return;
+    }
     if (p->momentary) {
         if (n > 0.5f) {
             queue_set(w, p->key, "1", triggers_refresh(p->key));
@@ -402,6 +595,7 @@ static void setParameter(AEffect *e, int32_t i, float n) {
         return;
     }
     char buf[32];
+    const float raw = n;   /* what the host holds; if a nudge snaps it to an option, the snapped value is pushed back */
     bool nudge = false;
     if (p->nopts > 1) {
         float pos = clamp01(n) * (p->nopts - 1);
@@ -415,8 +609,13 @@ static void setParameter(AEffect *e, int32_t i, float n) {
         }
     }
     w->cache[i].store(n);
+    w->told[i].store(raw);
+    mirror_sel(w, i, n);
     norm_to_str(p, n, buf, sizeof buf);
-    queue_set(w, p->key, buf, false);
+    size_t kl = std::strlen(p->key);
+    /* a new lane re-reads the sel_* values; a note/drum switch makes the engine pick that mode's note, so re-read it too */
+    bool refresh = !std::strcmp(p->key, "sel") || (kl >= 5 && !std::strcmp(p->key + kl - 5, "_mode"));
+    queue_set(w, p->key, buf, refresh);
     if (!nudge) popup_picked(w->open, w->release, i);   /* a list pick closes it; a Q-Link nudge doesn't */
 }
 
@@ -445,7 +644,7 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
     case effGetVendorString: copy_str(p, PLUG_VENDOR, 32); return 1;
     case effGetVendorVersion: return PLUG_VERSION;
     case effGetVstVersion: return 2400;
-    case effCanBeAutomated: return idx >= 0 && idx < NPARAMS;
+    case effCanBeAutomated: return idx >= 0 && idx < NPARAMS && !is_virtual(idx);
     case effGetParamName:
         if (idx >= 0 && idx < NPARAMS) copy_str(p, PARAMS[idx].name, 32);
         return 1;
@@ -456,6 +655,7 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
         if (idx < 0 || idx >= NPARAMS) return 0;
         const param_t *pp = &PARAMS[idx];
         if (pp->momentary) { copy_str(p, "", 24); return 1; }
+        if (pp->string_display) { std::lock_guard<std::mutex> lk(w->lvmu); copy_str(p, w->text[idx], 24); return 1; }
         if (pp->nopts) {
             int k = (int)std::lround((popup_is(idx) ? w->open[idx] : w->cache[idx].load()) * (pp->nopts - 1));
             copy_str(p, pp->opts[k], 24);
@@ -475,7 +675,7 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
         /* From cache -- no socket round-trip, consistent with get/setParameter. */
         std::string s;
         for (int i = 0; i < NPARAMS; i++) {
-            if (PARAMS[i].momentary || popup_is(i)) continue;
+            if (PARAMS[i].momentary || popup_is(i) || is_virtual(i)) continue;
             char buf[32];
             norm_to_str(&PARAMS[i], w->cache[i].load(), buf, sizeof buf);
             s += PARAMS[i].key; s += '='; s += buf; s += ';';
@@ -494,7 +694,7 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
             if (!eq) continue;
             *eq = 0;
             for (int i = 0; i < NPARAMS; i++) {
-                if (std::strcmp(PARAMS[i].key, tok) != 0) continue;
+                if (is_virtual(i) || std::strcmp(PARAMS[i].key, tok) != 0) continue;
                 w->cache[i].store(str_to_norm(&PARAMS[i], eq + 1));
                 queue_set(w, PARAMS[i].key, eq + 1, false);
                 break;
@@ -510,18 +710,21 @@ extern "C" __attribute__((visibility("default"))) AEffect *VSTPluginMain(audioMa
     if (!g_log) g_log = std::fopen("/tmp/euclidier_vst.log", "a");
     Plugin *w = new Plugin();
     w->master = master;
-    int n = g_instance_count.load();
+    int n = g_sock_seq.fetch_add(1);
     char sp[64];
     std::snprintf(sp, sizeof sp, "/tmp/euclidier_vst_%d_%d.sock", (int)getpid(), n);
     w->sockpath = sp;
-    for (int i = 0; i < NPARAMS; i++) w->cache[i].store(PARAMS[i].def);
+    static std::once_flag once;
+    std::call_once(once, build_vtable);
+    for (int i = 0; i < NPARAMS; i++) { w->cache[i].store(PARAMS[i].def); w->told[i].store(-1.0f); }
     spawn_engine(w);
     alsa_open(w);
     /* one-time blocking fill at load (counts against open time, not per-block
      * budget -- bench.sh measured "open 1105.6 ms" already, see this file's
      * header comment); every SET/GET after this is cache-only + async. */
     for (int i = 0; i < NPARAMS; i++)
-        if (!PARAMS[i].momentary && !popup_is(i)) w->cache[i].store(get_norm_blocking(w->sockpath, i));
+        if (!PARAMS[i].momentary && !popup_is(i) && !is_virtual(i)) w->cache[i].store(get_norm_blocking(w->sockpath, i));
+    for (int i = 0; i < NPARAMS; i++) if (!is_virtual(i)) w->told[i].store(w->cache[i].load());   /* the host reads these itself at load */
     w->io_thread = std::thread(io_worker, w);
 
     AEffect *e = &w->fx;

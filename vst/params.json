@@ -1,0 +1,6969 @@
+{
+ "name": "Euclidier",
+ "params": [
+  {
+   "key": "l1_enable",
+   "name": "Lane 1",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "l1_note",
+   "name": "Note",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l1_div",
+   "name": "Div",
+   "options": [
+    "1/16",
+    "1/16 (b)",
+    "1/8",
+    "1/4",
+    "1/2",
+    "1",
+    "1/32",
+    "1/24",
+    "1/12",
+    "1/6",
+    "1/3"
+   ]
+  },
+  {
+   "key": "l1_steps",
+   "name": "Steps",
+   "min": 2,
+   "max": 32
+  },
+  {
+   "key": "l1_fill",
+   "name": "Fill",
+   "min": 1,
+   "max": 32
+  },
+  {
+   "key": "l1_shift",
+   "name": "Shift",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l1_loop",
+   "name": "Loop",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l1_gate",
+   "name": "Gate",
+   "min": 10,
+   "max": 95
+  },
+  {
+   "key": "l1_ch",
+   "name": "MID CH.",
+   "min": 1,
+   "max": 16
+  },
+  {
+   "key": "l1_vel",
+   "name": "Velocity",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l1_velh",
+   "name": "Humanize",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "key": "l1_mode",
+   "name": "Mode",
+   "options": [
+    "NOTE",
+    "DRUM"
+   ]
+  },
+  {
+   "key": "l2_enable",
+   "name": "Lane 2",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "l2_note",
+   "name": "Note",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l2_div",
+   "name": "Div",
+   "options": [
+    "1/16",
+    "1/16 (b)",
+    "1/8",
+    "1/4",
+    "1/2",
+    "1",
+    "1/32",
+    "1/24",
+    "1/12",
+    "1/6",
+    "1/3"
+   ]
+  },
+  {
+   "key": "l2_steps",
+   "name": "Steps",
+   "min": 2,
+   "max": 32
+  },
+  {
+   "key": "l2_fill",
+   "name": "Fill",
+   "min": 1,
+   "max": 32
+  },
+  {
+   "key": "l2_shift",
+   "name": "Shift",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l2_loop",
+   "name": "Loop",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l2_gate",
+   "name": "Gate",
+   "min": 10,
+   "max": 95
+  },
+  {
+   "key": "l2_ch",
+   "name": "MID CH.",
+   "min": 1,
+   "max": 16
+  },
+  {
+   "key": "l2_vel",
+   "name": "Velocity",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l2_velh",
+   "name": "Humanize",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "key": "l2_mode",
+   "name": "Mode",
+   "options": [
+    "NOTE",
+    "DRUM"
+   ]
+  },
+  {
+   "key": "l3_enable",
+   "name": "Lane 3",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "l3_note",
+   "name": "Note",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l3_div",
+   "name": "Div",
+   "options": [
+    "1/16",
+    "1/16 (b)",
+    "1/8",
+    "1/4",
+    "1/2",
+    "1",
+    "1/32",
+    "1/24",
+    "1/12",
+    "1/6",
+    "1/3"
+   ]
+  },
+  {
+   "key": "l3_steps",
+   "name": "Steps",
+   "min": 2,
+   "max": 32
+  },
+  {
+   "key": "l3_fill",
+   "name": "Fill",
+   "min": 1,
+   "max": 32
+  },
+  {
+   "key": "l3_shift",
+   "name": "Shift",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l3_loop",
+   "name": "Loop",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l3_gate",
+   "name": "Gate",
+   "min": 10,
+   "max": 95
+  },
+  {
+   "key": "l3_ch",
+   "name": "MID CH.",
+   "min": 1,
+   "max": 16
+  },
+  {
+   "key": "l3_vel",
+   "name": "Velocity",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l3_velh",
+   "name": "Humanize",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "key": "l3_mode",
+   "name": "Mode",
+   "options": [
+    "NOTE",
+    "DRUM"
+   ]
+  },
+  {
+   "key": "l4_enable",
+   "name": "Lane 4",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "l4_note",
+   "name": "Note",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l4_div",
+   "name": "Div",
+   "options": [
+    "1/16",
+    "1/16 (b)",
+    "1/8",
+    "1/4",
+    "1/2",
+    "1",
+    "1/32",
+    "1/24",
+    "1/12",
+    "1/6",
+    "1/3"
+   ]
+  },
+  {
+   "key": "l4_steps",
+   "name": "Steps",
+   "min": 2,
+   "max": 32
+  },
+  {
+   "key": "l4_fill",
+   "name": "Fill",
+   "min": 1,
+   "max": 32
+  },
+  {
+   "key": "l4_shift",
+   "name": "Shift",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l4_loop",
+   "name": "Loop",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l4_gate",
+   "name": "Gate",
+   "min": 10,
+   "max": 95
+  },
+  {
+   "key": "l4_ch",
+   "name": "MID CH.",
+   "min": 1,
+   "max": 16
+  },
+  {
+   "key": "l4_vel",
+   "name": "Velocity",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l4_velh",
+   "name": "Humanize",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "key": "l4_mode",
+   "name": "Mode",
+   "options": [
+    "NOTE",
+    "DRUM"
+   ]
+  },
+  {
+   "key": "l5_enable",
+   "name": "Lane 5",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "l5_note",
+   "name": "Note",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l5_div",
+   "name": "Div",
+   "options": [
+    "1/16",
+    "1/16 (b)",
+    "1/8",
+    "1/4",
+    "1/2",
+    "1",
+    "1/32",
+    "1/24",
+    "1/12",
+    "1/6",
+    "1/3"
+   ]
+  },
+  {
+   "key": "l5_steps",
+   "name": "Steps",
+   "min": 2,
+   "max": 32
+  },
+  {
+   "key": "l5_fill",
+   "name": "Fill",
+   "min": 1,
+   "max": 32
+  },
+  {
+   "key": "l5_shift",
+   "name": "Shift",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l5_loop",
+   "name": "Loop",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l5_gate",
+   "name": "Gate",
+   "min": 10,
+   "max": 95
+  },
+  {
+   "key": "l5_ch",
+   "name": "MID CH.",
+   "min": 1,
+   "max": 16
+  },
+  {
+   "key": "l5_vel",
+   "name": "Velocity",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l5_velh",
+   "name": "Humanize",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "key": "l5_mode",
+   "name": "Mode",
+   "options": [
+    "NOTE",
+    "DRUM"
+   ]
+  },
+  {
+   "key": "l6_enable",
+   "name": "Lane 6",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "l6_note",
+   "name": "Note",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l6_div",
+   "name": "Div",
+   "options": [
+    "1/16",
+    "1/16 (b)",
+    "1/8",
+    "1/4",
+    "1/2",
+    "1",
+    "1/32",
+    "1/24",
+    "1/12",
+    "1/6",
+    "1/3"
+   ]
+  },
+  {
+   "key": "l6_steps",
+   "name": "Steps",
+   "min": 2,
+   "max": 32
+  },
+  {
+   "key": "l6_fill",
+   "name": "Fill",
+   "min": 1,
+   "max": 32
+  },
+  {
+   "key": "l6_shift",
+   "name": "Shift",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l6_loop",
+   "name": "Loop",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l6_gate",
+   "name": "Gate",
+   "min": 10,
+   "max": 95
+  },
+  {
+   "key": "l6_ch",
+   "name": "MID CH.",
+   "min": 1,
+   "max": 16
+  },
+  {
+   "key": "l6_vel",
+   "name": "Velocity",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l6_velh",
+   "name": "Humanize",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "key": "l6_mode",
+   "name": "Mode",
+   "options": [
+    "NOTE",
+    "DRUM"
+   ]
+  },
+  {
+   "key": "l7_enable",
+   "name": "Lane 7",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "l7_note",
+   "name": "Note",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l7_div",
+   "name": "Div",
+   "options": [
+    "1/16",
+    "1/16 (b)",
+    "1/8",
+    "1/4",
+    "1/2",
+    "1",
+    "1/32",
+    "1/24",
+    "1/12",
+    "1/6",
+    "1/3"
+   ]
+  },
+  {
+   "key": "l7_steps",
+   "name": "Steps",
+   "min": 2,
+   "max": 32
+  },
+  {
+   "key": "l7_fill",
+   "name": "Fill",
+   "min": 1,
+   "max": 32
+  },
+  {
+   "key": "l7_shift",
+   "name": "Shift",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l7_loop",
+   "name": "Loop",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l7_gate",
+   "name": "Gate",
+   "min": 10,
+   "max": 95
+  },
+  {
+   "key": "l7_ch",
+   "name": "MID CH.",
+   "min": 1,
+   "max": 16
+  },
+  {
+   "key": "l7_vel",
+   "name": "Velocity",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l7_velh",
+   "name": "Humanize",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "key": "l7_mode",
+   "name": "Mode",
+   "options": [
+    "NOTE",
+    "DRUM"
+   ]
+  },
+  {
+   "key": "l8_enable",
+   "name": "Lane 8",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "l8_note",
+   "name": "Note",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l8_div",
+   "name": "Div",
+   "options": [
+    "1/16",
+    "1/16 (b)",
+    "1/8",
+    "1/4",
+    "1/2",
+    "1",
+    "1/32",
+    "1/24",
+    "1/12",
+    "1/6",
+    "1/3"
+   ]
+  },
+  {
+   "key": "l8_steps",
+   "name": "Steps",
+   "min": 2,
+   "max": 32
+  },
+  {
+   "key": "l8_fill",
+   "name": "Fill",
+   "min": 1,
+   "max": 32
+  },
+  {
+   "key": "l8_shift",
+   "name": "Shift",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l8_loop",
+   "name": "Loop",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "l8_gate",
+   "name": "Gate",
+   "min": 10,
+   "max": 95
+  },
+  {
+   "key": "l8_ch",
+   "name": "MID CH.",
+   "min": 1,
+   "max": 16
+  },
+  {
+   "key": "l8_vel",
+   "name": "Velocity",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "l8_velh",
+   "name": "Humanize",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "key": "l8_mode",
+   "name": "Mode",
+   "options": [
+    "NOTE",
+    "DRUM"
+   ]
+  },
+  {
+   "key": "preset",
+   "name": "Preset",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "preset_load",
+   "name": "Load",
+   "access": "write"
+  },
+  {
+   "key": "preset_save",
+   "name": "Save",
+   "access": "write"
+  },
+  {
+   "key": "rand_lane",
+   "name": "Rand Lane",
+   "options": [
+    "ALL",
+    "LANE 1",
+    "LANE 2",
+    "LANE 3",
+    "LANE 4",
+    "LANE 5",
+    "LANE 6",
+    "LANE 7",
+    "LANE 8",
+    "ALL BUT 1",
+    "ALL BUT 5"
+   ]
+  },
+  {
+   "key": "rand_go",
+   "name": "Randomize",
+   "access": "write"
+  },
+  {
+   "key": "sel",
+   "name": "Lane",
+   "options": [
+    "LANE 1",
+    "LANE 2",
+    "LANE 3",
+    "LANE 4",
+    "LANE 5",
+    "LANE 6",
+    "LANE 7",
+    "LANE 8"
+   ]
+  },
+  {
+   "key": "sel_enable",
+   "name": "Enable",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "sel_note",
+   "name": "Note",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "sel_div",
+   "name": "Div",
+   "options": [
+    "1/16",
+    "1/16 (b)",
+    "1/8",
+    "1/4",
+    "1/2",
+    "1",
+    "1/32",
+    "1/24",
+    "1/12",
+    "1/6",
+    "1/3"
+   ]
+  },
+  {
+   "key": "sel_steps",
+   "name": "Steps",
+   "min": 2,
+   "max": 32
+  },
+  {
+   "key": "sel_fill",
+   "name": "Fill",
+   "min": 1,
+   "max": 32
+  },
+  {
+   "key": "sel_shift",
+   "name": "Shift",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "sel_loop",
+   "name": "Loop",
+   "min": 0,
+   "max": 32
+  },
+  {
+   "key": "sel_gate",
+   "name": "Gate",
+   "min": 10,
+   "max": 95
+  },
+  {
+   "key": "sel_ch",
+   "name": "MID CH.",
+   "min": 1,
+   "max": 16
+  },
+  {
+   "key": "sel_vel",
+   "name": "Velocity",
+   "min": 0,
+   "max": 127
+  },
+  {
+   "key": "sel_velh",
+   "name": "Humanize",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "key": "sel_mode",
+   "name": "Mode",
+   "options": [
+    "NOTE",
+    "DRUM"
+   ]
+  },
+  {
+   "key": "rand_l1",
+   "name": "Lane 1",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "rand_l2",
+   "name": "Lane 2",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "rand_l3",
+   "name": "Lane 3",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "rand_l4",
+   "name": "Lane 4",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "rand_l5",
+   "name": "Lane 5",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "rand_l6",
+   "name": "Lane 6",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "rand_l7",
+   "name": "Lane 7",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "rand_l8",
+   "name": "Lane 8",
+   "options": [
+    "OFF",
+    "ON"
+   ]
+  },
+  {
+   "key": "all_drum",
+   "name": "All Drum",
+   "momentary": true
+  },
+  {
+   "key": "sel_prev",
+   "name": "sel_prev",
+   "momentary": true,
+   "step_of": "sel",
+   "step_delta": -1
+  },
+  {
+   "key": "sel_next",
+   "name": "sel_next",
+   "momentary": true,
+   "step_of": "sel",
+   "step_delta": 1
+  },
+  {
+   "key": "sel_div_prev",
+   "name": "sel_div_prev",
+   "momentary": true,
+   "step_of": "sel_div",
+   "step_delta": -1
+  },
+  {
+   "key": "sel_div_next",
+   "name": "sel_div_next",
+   "momentary": true,
+   "step_of": "sel_div",
+   "step_delta": 1
+  },
+  {
+   "key": "l1_info",
+   "name": "L1 Info",
+   "display": "string",
+   "min": 0,
+   "max": 1,
+   "default": 0
+  },
+  {
+   "key": "l2_info",
+   "name": "L2 Info",
+   "display": "string",
+   "min": 0,
+   "max": 1,
+   "default": 0
+  },
+  {
+   "key": "l3_info",
+   "name": "L3 Info",
+   "display": "string",
+   "min": 0,
+   "max": 1,
+   "default": 0
+  },
+  {
+   "key": "l4_info",
+   "name": "L4 Info",
+   "display": "string",
+   "min": 0,
+   "max": 1,
+   "default": 0
+  },
+  {
+   "key": "l5_info",
+   "name": "L5 Info",
+   "display": "string",
+   "min": 0,
+   "max": 1,
+   "default": 0
+  },
+  {
+   "key": "l6_info",
+   "name": "L6 Info",
+   "display": "string",
+   "min": 0,
+   "max": 1,
+   "default": 0
+  },
+  {
+   "key": "l7_info",
+   "name": "L7 Info",
+   "display": "string",
+   "min": 0,
+   "max": 1,
+   "default": 0
+  },
+  {
+   "key": "l8_info",
+   "name": "L8 Info",
+   "display": "string",
+   "min": 0,
+   "max": 1,
+   "default": 0
+  },
+  {
+   "key": "g1_8_0",
+   "name": "G1.8.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_8_1",
+   "name": "G1.8.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_8_2",
+   "name": "G1.8.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_8_3",
+   "name": "G1.8.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_8_4",
+   "name": "G1.8.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_8_5",
+   "name": "G1.8.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_8_6",
+   "name": "G1.8.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_8_7",
+   "name": "G1.8.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_0",
+   "name": "G1.16.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_1",
+   "name": "G1.16.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_2",
+   "name": "G1.16.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_3",
+   "name": "G1.16.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_4",
+   "name": "G1.16.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_5",
+   "name": "G1.16.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_6",
+   "name": "G1.16.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_7",
+   "name": "G1.16.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_8",
+   "name": "G1.16.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_9",
+   "name": "G1.16.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_10",
+   "name": "G1.16.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_11",
+   "name": "G1.16.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_12",
+   "name": "G1.16.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_13",
+   "name": "G1.16.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_14",
+   "name": "G1.16.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_16_15",
+   "name": "G1.16.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_0",
+   "name": "G1.32.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_1",
+   "name": "G1.32.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_2",
+   "name": "G1.32.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_3",
+   "name": "G1.32.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_4",
+   "name": "G1.32.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_5",
+   "name": "G1.32.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_6",
+   "name": "G1.32.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_7",
+   "name": "G1.32.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_8",
+   "name": "G1.32.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_9",
+   "name": "G1.32.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_10",
+   "name": "G1.32.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_11",
+   "name": "G1.32.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_12",
+   "name": "G1.32.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_13",
+   "name": "G1.32.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_14",
+   "name": "G1.32.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_15",
+   "name": "G1.32.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_16",
+   "name": "G1.32.16",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_17",
+   "name": "G1.32.17",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_18",
+   "name": "G1.32.18",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_19",
+   "name": "G1.32.19",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_20",
+   "name": "G1.32.20",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_21",
+   "name": "G1.32.21",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_22",
+   "name": "G1.32.22",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_23",
+   "name": "G1.32.23",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_24",
+   "name": "G1.32.24",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_25",
+   "name": "G1.32.25",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_26",
+   "name": "G1.32.26",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_27",
+   "name": "G1.32.27",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_28",
+   "name": "G1.32.28",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_29",
+   "name": "G1.32.29",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_30",
+   "name": "G1.32.30",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g1_32_31",
+   "name": "G1.32.31",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_8_0",
+   "name": "G2.8.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_8_1",
+   "name": "G2.8.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_8_2",
+   "name": "G2.8.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_8_3",
+   "name": "G2.8.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_8_4",
+   "name": "G2.8.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_8_5",
+   "name": "G2.8.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_8_6",
+   "name": "G2.8.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_8_7",
+   "name": "G2.8.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_0",
+   "name": "G2.16.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_1",
+   "name": "G2.16.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_2",
+   "name": "G2.16.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_3",
+   "name": "G2.16.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_4",
+   "name": "G2.16.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_5",
+   "name": "G2.16.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_6",
+   "name": "G2.16.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_7",
+   "name": "G2.16.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_8",
+   "name": "G2.16.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_9",
+   "name": "G2.16.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_10",
+   "name": "G2.16.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_11",
+   "name": "G2.16.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_12",
+   "name": "G2.16.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_13",
+   "name": "G2.16.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_14",
+   "name": "G2.16.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_16_15",
+   "name": "G2.16.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_0",
+   "name": "G2.32.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_1",
+   "name": "G2.32.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_2",
+   "name": "G2.32.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_3",
+   "name": "G2.32.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_4",
+   "name": "G2.32.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_5",
+   "name": "G2.32.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_6",
+   "name": "G2.32.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_7",
+   "name": "G2.32.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_8",
+   "name": "G2.32.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_9",
+   "name": "G2.32.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_10",
+   "name": "G2.32.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_11",
+   "name": "G2.32.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_12",
+   "name": "G2.32.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_13",
+   "name": "G2.32.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_14",
+   "name": "G2.32.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_15",
+   "name": "G2.32.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_16",
+   "name": "G2.32.16",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_17",
+   "name": "G2.32.17",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_18",
+   "name": "G2.32.18",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_19",
+   "name": "G2.32.19",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_20",
+   "name": "G2.32.20",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_21",
+   "name": "G2.32.21",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_22",
+   "name": "G2.32.22",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_23",
+   "name": "G2.32.23",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_24",
+   "name": "G2.32.24",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_25",
+   "name": "G2.32.25",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_26",
+   "name": "G2.32.26",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_27",
+   "name": "G2.32.27",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_28",
+   "name": "G2.32.28",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_29",
+   "name": "G2.32.29",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_30",
+   "name": "G2.32.30",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g2_32_31",
+   "name": "G2.32.31",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_8_0",
+   "name": "G3.8.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_8_1",
+   "name": "G3.8.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_8_2",
+   "name": "G3.8.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_8_3",
+   "name": "G3.8.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_8_4",
+   "name": "G3.8.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_8_5",
+   "name": "G3.8.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_8_6",
+   "name": "G3.8.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_8_7",
+   "name": "G3.8.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_0",
+   "name": "G3.16.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_1",
+   "name": "G3.16.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_2",
+   "name": "G3.16.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_3",
+   "name": "G3.16.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_4",
+   "name": "G3.16.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_5",
+   "name": "G3.16.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_6",
+   "name": "G3.16.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_7",
+   "name": "G3.16.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_8",
+   "name": "G3.16.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_9",
+   "name": "G3.16.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_10",
+   "name": "G3.16.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_11",
+   "name": "G3.16.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_12",
+   "name": "G3.16.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_13",
+   "name": "G3.16.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_14",
+   "name": "G3.16.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_16_15",
+   "name": "G3.16.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_0",
+   "name": "G3.32.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_1",
+   "name": "G3.32.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_2",
+   "name": "G3.32.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_3",
+   "name": "G3.32.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_4",
+   "name": "G3.32.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_5",
+   "name": "G3.32.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_6",
+   "name": "G3.32.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_7",
+   "name": "G3.32.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_8",
+   "name": "G3.32.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_9",
+   "name": "G3.32.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_10",
+   "name": "G3.32.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_11",
+   "name": "G3.32.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_12",
+   "name": "G3.32.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_13",
+   "name": "G3.32.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_14",
+   "name": "G3.32.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_15",
+   "name": "G3.32.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_16",
+   "name": "G3.32.16",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_17",
+   "name": "G3.32.17",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_18",
+   "name": "G3.32.18",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_19",
+   "name": "G3.32.19",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_20",
+   "name": "G3.32.20",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_21",
+   "name": "G3.32.21",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_22",
+   "name": "G3.32.22",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_23",
+   "name": "G3.32.23",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_24",
+   "name": "G3.32.24",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_25",
+   "name": "G3.32.25",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_26",
+   "name": "G3.32.26",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_27",
+   "name": "G3.32.27",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_28",
+   "name": "G3.32.28",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_29",
+   "name": "G3.32.29",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_30",
+   "name": "G3.32.30",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g3_32_31",
+   "name": "G3.32.31",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_8_0",
+   "name": "G4.8.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_8_1",
+   "name": "G4.8.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_8_2",
+   "name": "G4.8.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_8_3",
+   "name": "G4.8.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_8_4",
+   "name": "G4.8.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_8_5",
+   "name": "G4.8.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_8_6",
+   "name": "G4.8.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_8_7",
+   "name": "G4.8.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_0",
+   "name": "G4.16.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_1",
+   "name": "G4.16.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_2",
+   "name": "G4.16.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_3",
+   "name": "G4.16.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_4",
+   "name": "G4.16.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_5",
+   "name": "G4.16.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_6",
+   "name": "G4.16.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_7",
+   "name": "G4.16.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_8",
+   "name": "G4.16.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_9",
+   "name": "G4.16.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_10",
+   "name": "G4.16.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_11",
+   "name": "G4.16.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_12",
+   "name": "G4.16.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_13",
+   "name": "G4.16.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_14",
+   "name": "G4.16.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_16_15",
+   "name": "G4.16.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_0",
+   "name": "G4.32.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_1",
+   "name": "G4.32.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_2",
+   "name": "G4.32.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_3",
+   "name": "G4.32.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_4",
+   "name": "G4.32.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_5",
+   "name": "G4.32.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_6",
+   "name": "G4.32.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_7",
+   "name": "G4.32.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_8",
+   "name": "G4.32.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_9",
+   "name": "G4.32.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_10",
+   "name": "G4.32.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_11",
+   "name": "G4.32.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_12",
+   "name": "G4.32.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_13",
+   "name": "G4.32.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_14",
+   "name": "G4.32.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_15",
+   "name": "G4.32.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_16",
+   "name": "G4.32.16",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_17",
+   "name": "G4.32.17",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_18",
+   "name": "G4.32.18",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_19",
+   "name": "G4.32.19",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_20",
+   "name": "G4.32.20",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_21",
+   "name": "G4.32.21",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_22",
+   "name": "G4.32.22",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_23",
+   "name": "G4.32.23",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_24",
+   "name": "G4.32.24",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_25",
+   "name": "G4.32.25",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_26",
+   "name": "G4.32.26",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_27",
+   "name": "G4.32.27",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_28",
+   "name": "G4.32.28",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_29",
+   "name": "G4.32.29",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_30",
+   "name": "G4.32.30",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g4_32_31",
+   "name": "G4.32.31",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_8_0",
+   "name": "G5.8.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_8_1",
+   "name": "G5.8.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_8_2",
+   "name": "G5.8.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_8_3",
+   "name": "G5.8.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_8_4",
+   "name": "G5.8.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_8_5",
+   "name": "G5.8.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_8_6",
+   "name": "G5.8.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_8_7",
+   "name": "G5.8.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_0",
+   "name": "G5.16.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_1",
+   "name": "G5.16.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_2",
+   "name": "G5.16.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_3",
+   "name": "G5.16.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_4",
+   "name": "G5.16.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_5",
+   "name": "G5.16.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_6",
+   "name": "G5.16.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_7",
+   "name": "G5.16.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_8",
+   "name": "G5.16.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_9",
+   "name": "G5.16.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_10",
+   "name": "G5.16.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_11",
+   "name": "G5.16.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_12",
+   "name": "G5.16.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_13",
+   "name": "G5.16.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_14",
+   "name": "G5.16.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_16_15",
+   "name": "G5.16.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_0",
+   "name": "G5.32.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_1",
+   "name": "G5.32.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_2",
+   "name": "G5.32.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_3",
+   "name": "G5.32.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_4",
+   "name": "G5.32.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_5",
+   "name": "G5.32.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_6",
+   "name": "G5.32.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_7",
+   "name": "G5.32.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_8",
+   "name": "G5.32.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_9",
+   "name": "G5.32.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_10",
+   "name": "G5.32.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_11",
+   "name": "G5.32.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_12",
+   "name": "G5.32.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_13",
+   "name": "G5.32.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_14",
+   "name": "G5.32.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_15",
+   "name": "G5.32.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_16",
+   "name": "G5.32.16",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_17",
+   "name": "G5.32.17",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_18",
+   "name": "G5.32.18",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_19",
+   "name": "G5.32.19",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_20",
+   "name": "G5.32.20",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_21",
+   "name": "G5.32.21",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_22",
+   "name": "G5.32.22",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_23",
+   "name": "G5.32.23",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_24",
+   "name": "G5.32.24",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_25",
+   "name": "G5.32.25",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_26",
+   "name": "G5.32.26",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_27",
+   "name": "G5.32.27",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_28",
+   "name": "G5.32.28",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_29",
+   "name": "G5.32.29",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_30",
+   "name": "G5.32.30",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g5_32_31",
+   "name": "G5.32.31",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_8_0",
+   "name": "G6.8.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_8_1",
+   "name": "G6.8.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_8_2",
+   "name": "G6.8.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_8_3",
+   "name": "G6.8.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_8_4",
+   "name": "G6.8.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_8_5",
+   "name": "G6.8.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_8_6",
+   "name": "G6.8.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_8_7",
+   "name": "G6.8.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_0",
+   "name": "G6.16.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_1",
+   "name": "G6.16.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_2",
+   "name": "G6.16.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_3",
+   "name": "G6.16.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_4",
+   "name": "G6.16.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_5",
+   "name": "G6.16.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_6",
+   "name": "G6.16.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_7",
+   "name": "G6.16.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_8",
+   "name": "G6.16.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_9",
+   "name": "G6.16.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_10",
+   "name": "G6.16.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_11",
+   "name": "G6.16.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_12",
+   "name": "G6.16.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_13",
+   "name": "G6.16.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_14",
+   "name": "G6.16.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_16_15",
+   "name": "G6.16.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_0",
+   "name": "G6.32.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_1",
+   "name": "G6.32.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_2",
+   "name": "G6.32.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_3",
+   "name": "G6.32.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_4",
+   "name": "G6.32.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_5",
+   "name": "G6.32.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_6",
+   "name": "G6.32.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_7",
+   "name": "G6.32.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_8",
+   "name": "G6.32.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_9",
+   "name": "G6.32.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_10",
+   "name": "G6.32.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_11",
+   "name": "G6.32.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_12",
+   "name": "G6.32.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_13",
+   "name": "G6.32.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_14",
+   "name": "G6.32.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_15",
+   "name": "G6.32.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_16",
+   "name": "G6.32.16",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_17",
+   "name": "G6.32.17",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_18",
+   "name": "G6.32.18",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_19",
+   "name": "G6.32.19",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_20",
+   "name": "G6.32.20",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_21",
+   "name": "G6.32.21",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_22",
+   "name": "G6.32.22",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_23",
+   "name": "G6.32.23",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_24",
+   "name": "G6.32.24",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_25",
+   "name": "G6.32.25",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_26",
+   "name": "G6.32.26",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_27",
+   "name": "G6.32.27",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_28",
+   "name": "G6.32.28",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_29",
+   "name": "G6.32.29",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_30",
+   "name": "G6.32.30",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g6_32_31",
+   "name": "G6.32.31",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_8_0",
+   "name": "G7.8.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_8_1",
+   "name": "G7.8.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_8_2",
+   "name": "G7.8.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_8_3",
+   "name": "G7.8.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_8_4",
+   "name": "G7.8.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_8_5",
+   "name": "G7.8.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_8_6",
+   "name": "G7.8.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_8_7",
+   "name": "G7.8.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_0",
+   "name": "G7.16.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_1",
+   "name": "G7.16.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_2",
+   "name": "G7.16.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_3",
+   "name": "G7.16.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_4",
+   "name": "G7.16.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_5",
+   "name": "G7.16.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_6",
+   "name": "G7.16.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_7",
+   "name": "G7.16.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_8",
+   "name": "G7.16.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_9",
+   "name": "G7.16.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_10",
+   "name": "G7.16.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_11",
+   "name": "G7.16.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_12",
+   "name": "G7.16.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_13",
+   "name": "G7.16.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_14",
+   "name": "G7.16.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_16_15",
+   "name": "G7.16.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_0",
+   "name": "G7.32.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_1",
+   "name": "G7.32.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_2",
+   "name": "G7.32.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_3",
+   "name": "G7.32.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_4",
+   "name": "G7.32.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_5",
+   "name": "G7.32.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_6",
+   "name": "G7.32.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_7",
+   "name": "G7.32.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_8",
+   "name": "G7.32.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_9",
+   "name": "G7.32.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_10",
+   "name": "G7.32.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_11",
+   "name": "G7.32.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_12",
+   "name": "G7.32.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_13",
+   "name": "G7.32.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_14",
+   "name": "G7.32.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_15",
+   "name": "G7.32.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_16",
+   "name": "G7.32.16",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_17",
+   "name": "G7.32.17",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_18",
+   "name": "G7.32.18",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_19",
+   "name": "G7.32.19",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_20",
+   "name": "G7.32.20",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_21",
+   "name": "G7.32.21",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_22",
+   "name": "G7.32.22",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_23",
+   "name": "G7.32.23",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_24",
+   "name": "G7.32.24",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_25",
+   "name": "G7.32.25",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_26",
+   "name": "G7.32.26",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_27",
+   "name": "G7.32.27",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_28",
+   "name": "G7.32.28",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_29",
+   "name": "G7.32.29",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_30",
+   "name": "G7.32.30",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g7_32_31",
+   "name": "G7.32.31",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_8_0",
+   "name": "G8.8.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_8_1",
+   "name": "G8.8.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_8_2",
+   "name": "G8.8.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_8_3",
+   "name": "G8.8.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_8_4",
+   "name": "G8.8.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_8_5",
+   "name": "G8.8.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_8_6",
+   "name": "G8.8.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_8_7",
+   "name": "G8.8.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_0",
+   "name": "G8.16.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_1",
+   "name": "G8.16.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_2",
+   "name": "G8.16.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_3",
+   "name": "G8.16.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_4",
+   "name": "G8.16.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_5",
+   "name": "G8.16.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_6",
+   "name": "G8.16.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_7",
+   "name": "G8.16.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_8",
+   "name": "G8.16.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_9",
+   "name": "G8.16.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_10",
+   "name": "G8.16.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_11",
+   "name": "G8.16.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_12",
+   "name": "G8.16.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_13",
+   "name": "G8.16.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_14",
+   "name": "G8.16.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_16_15",
+   "name": "G8.16.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_0",
+   "name": "G8.32.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_1",
+   "name": "G8.32.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_2",
+   "name": "G8.32.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_3",
+   "name": "G8.32.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_4",
+   "name": "G8.32.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_5",
+   "name": "G8.32.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_6",
+   "name": "G8.32.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_7",
+   "name": "G8.32.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_8",
+   "name": "G8.32.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_9",
+   "name": "G8.32.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_10",
+   "name": "G8.32.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_11",
+   "name": "G8.32.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_12",
+   "name": "G8.32.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_13",
+   "name": "G8.32.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_14",
+   "name": "G8.32.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_15",
+   "name": "G8.32.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_16",
+   "name": "G8.32.16",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_17",
+   "name": "G8.32.17",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_18",
+   "name": "G8.32.18",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_19",
+   "name": "G8.32.19",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_20",
+   "name": "G8.32.20",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_21",
+   "name": "G8.32.21",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_22",
+   "name": "G8.32.22",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_23",
+   "name": "G8.32.23",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_24",
+   "name": "G8.32.24",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_25",
+   "name": "G8.32.25",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_26",
+   "name": "G8.32.26",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_27",
+   "name": "G8.32.27",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_28",
+   "name": "G8.32.28",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_29",
+   "name": "G8.32.29",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_30",
+   "name": "G8.32.30",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "g8_32_31",
+   "name": "G8.32.31",
+   "options": [
+    "-",
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c8_0",
+   "name": "C8.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c8_1",
+   "name": "C8.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c8_2",
+   "name": "C8.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c8_3",
+   "name": "C8.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c8_4",
+   "name": "C8.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c8_5",
+   "name": "C8.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c8_6",
+   "name": "C8.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c8_7",
+   "name": "C8.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_0",
+   "name": "C12.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_1",
+   "name": "C12.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_2",
+   "name": "C12.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_3",
+   "name": "C12.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_4",
+   "name": "C12.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_5",
+   "name": "C12.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_6",
+   "name": "C12.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_7",
+   "name": "C12.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_8",
+   "name": "C12.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_9",
+   "name": "C12.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_10",
+   "name": "C12.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c12_11",
+   "name": "C12.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_0",
+   "name": "C16.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_1",
+   "name": "C16.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_2",
+   "name": "C16.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_3",
+   "name": "C16.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_4",
+   "name": "C16.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_5",
+   "name": "C16.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_6",
+   "name": "C16.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_7",
+   "name": "C16.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_8",
+   "name": "C16.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_9",
+   "name": "C16.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_10",
+   "name": "C16.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_11",
+   "name": "C16.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_12",
+   "name": "C16.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_13",
+   "name": "C16.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_14",
+   "name": "C16.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c16_15",
+   "name": "C16.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_0",
+   "name": "C24.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_1",
+   "name": "C24.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_2",
+   "name": "C24.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_3",
+   "name": "C24.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_4",
+   "name": "C24.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_5",
+   "name": "C24.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_6",
+   "name": "C24.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_7",
+   "name": "C24.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_8",
+   "name": "C24.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_9",
+   "name": "C24.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_10",
+   "name": "C24.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_11",
+   "name": "C24.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_12",
+   "name": "C24.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_13",
+   "name": "C24.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_14",
+   "name": "C24.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_15",
+   "name": "C24.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_16",
+   "name": "C24.16",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_17",
+   "name": "C24.17",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_18",
+   "name": "C24.18",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_19",
+   "name": "C24.19",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_20",
+   "name": "C24.20",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_21",
+   "name": "C24.21",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_22",
+   "name": "C24.22",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c24_23",
+   "name": "C24.23",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_0",
+   "name": "C32.0",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_1",
+   "name": "C32.1",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_2",
+   "name": "C32.2",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_3",
+   "name": "C32.3",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_4",
+   "name": "C32.4",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_5",
+   "name": "C32.5",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_6",
+   "name": "C32.6",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_7",
+   "name": "C32.7",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_8",
+   "name": "C32.8",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_9",
+   "name": "C32.9",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_10",
+   "name": "C32.10",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_11",
+   "name": "C32.11",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_12",
+   "name": "C32.12",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_13",
+   "name": "C32.13",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_14",
+   "name": "C32.14",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_15",
+   "name": "C32.15",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_16",
+   "name": "C32.16",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_17",
+   "name": "C32.17",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_18",
+   "name": "C32.18",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_19",
+   "name": "C32.19",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_20",
+   "name": "C32.20",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_21",
+   "name": "C32.21",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_22",
+   "name": "C32.22",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_23",
+   "name": "C32.23",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_24",
+   "name": "C32.24",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_25",
+   "name": "C32.25",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_26",
+   "name": "C32.26",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_27",
+   "name": "C32.27",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_28",
+   "name": "C32.28",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_29",
+   "name": "C32.29",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_30",
+   "name": "C32.30",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  },
+  {
+   "key": "c32_31",
+   "name": "C32.31",
+   "options": [
+    "-",
+    "OFF",
+    "ON",
+    "OFF >",
+    "ON >"
+   ],
+   "default": 0
+  }
+ ]
+}

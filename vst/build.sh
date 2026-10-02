@@ -4,7 +4,6 @@
 #   vst/build/euclidier.so          -> /sdcard/vst/ on the device
 #   vst/build/pluginlist-entry.xml  the <PLUGIN> line for MPC.settings' pluginList-arm
 #   vst/build/skin/                 -> /sdcard/Synths/ on the device
-#   vst/build/euclidier-x86         x86 build of the real standalone engine, for host_test
 #   vst/build/host_test             offline ASan test (see docs/PORTING.md "Offline test first")
 # Not a Schwung DSP quick-start port (MIDI generator with host-side glue, docs/PORTING.md
 # classification 0/1): euclidier.cpp is a monolithic standalone app, so euclidier_vst.cpp
@@ -18,23 +17,17 @@ MPC_VST="${MPC_VST:-../../mpc-vst}"
 U="$(id -u):$(id -g)"
 mkdir -p build
 
-# 1. skin artwork renderer (host binary; mpc-vst's vendored copy of the renderer, tools/vendor/force-shadow)
-docker run --rm -u "$U" -v "$PWD":/w -v "$MPC_VST":/mv:ro -w /w gcc:12 \
-  gcc -O2 -I/mv/tools/vendor/force-shadow/tools -o build/shadow_art /mv/tools/shadow_art.c -lm
-
-# 2. params.h, skin, pluginlist-entry.xml (needs Pillow, for the offline skin preview)
-docker run --rm -u "$U" -v "$PWD":/w -v "$MPC_VST":/mv:ro -w /w python:3.11-slim sh -c \
-  "pip install -q --no-warn-script-location --target /tmp/p pillow >/dev/null 2>&1; PYTHONPATH=/tmp/p python3 /mv/tools/gen_vst.py vst.json"
+# 1. skin inputs (params.json, layout.conf, images/) from make_skin.py, then params.h + the skin (browser renderer:
+#    vst.json "art": "html"; the mpc-vst-html-art image has Pillow + headless Chromium)
+docker build -q -t mpc-vst-html-art "$MPC_VST/tools/html_art" >/dev/null
+docker run --rm -u "$U" -e HOME=/tmp -v "$PWD":/w -w /w mpc-vst-html-art python3 make_skin.py
+docker run --rm -u "$U" -e HOME=/tmp -v "$PWD":/w -v "$MPC_VST":/mv:ro -w /w mpc-vst-html-art \
+  python3 /mv/tools/gen_vst.py vst.json
 
 cp "$MPC_VST/wrapper/popup.h" build/   # popup open-flag handling shared with mpc-vst's own wrapper
 
-# 3. x86 build of the real standalone engine (for host_test only -- ASan, no strip)
-docker run --rm -v "$PWD/..":/b -w /b gcc:12 bash -euxc '
-  apt-get update -qq && apt-get install -y -qq libasound2-dev >/dev/null
-  g++ -w -D__LINUX_ALSA__ -O0 -g -fsanitize=address -fPIC -Wno-unused-variable src/*.cpp \
-      -o vst/build/euclidier-x86 -lm -ldl -lasound -lpthread
-  chown -R '"$U"' vst/build
-'
+# 3. (the host test uses fake_engine.py, which speaks the engine's control-socket protocol: the real engine needs an
+#    ALSA sequencer, which the test container does not have)
 
 # 4. wrapper + host_test, x86, ASan (see PORTING.md "Offline test first")
 docker run --rm -v "$PWD/..":/b -w /b/vst gcc:12 bash -euxc '
@@ -46,7 +39,7 @@ docker run --rm -v "$PWD/..":/b -w /b/vst gcc:12 bash -euxc '
   chown -R '"$U"' build
 '
 echo "-- run host_test (spawns build/euclidier-x86) --"
-docker run --rm -v "$PWD/..":/b -w /b/vst -e EUCLIDIER_BIN=/b/vst/build/euclidier-x86 \
+docker run --rm -v "$PWD/..":/b -w /b/vst -e EUCLIDIER_BIN=/b/vst/fake_engine.py \
   -e LD_LIBRARY_PATH=/b/vst/build -e ASAN_OPTIONS=detect_leaks=0 gcc:12 bash -euxc '
   apt-get update -qq && apt-get install -y -qq libasound2 >/dev/null
   ./build/host_test
