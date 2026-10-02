@@ -156,6 +156,7 @@ def layout():
     # ---- DETAIL
     a("[tab MAIN]")
     a('text cx=44 cy=118 label="EUCLIDIER" align=left weight=700 size=3 spacing=3')
+    a('button cx=1130 cy=118 label="ALL LANES DRUM" key=all_drum')
     a('frame x=36 y=150 w=590 h=548 title="PATTERN"')
     a('stepper cx=331 cy=214 w=320 h=44 label="" key=sel prev=sel_prev next=sel_next label_align=center')
     a('art file="images/circle_guide.png" x=%d y=%d w=%d h=%d fit=stretch' % (CCX - CIRC_BOX // 2, CCY - CIRC_BOX // 2, CIRC_BOX, CIRC_BOX))
