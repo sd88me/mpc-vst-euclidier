@@ -743,7 +743,8 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
     }
 }
 
-/* A fresh instance: lanes 1-4 on with four different standard Euclidean patterns, lanes 5-8 off. */
+/* A fresh instance: every lane in DRUM mode (the engine then gives each lane its own General MIDI drum note), lanes 1-4 on with
+ * four different standard Euclidean patterns, lanes 5-8 off. */
 static void set_defaults(Plugin *w) {
     struct D { int steps, fill; };
     static const D pat[4] = {{16, 4}, {8, 3}, {12, 5}, {16, 5}};   /* four on the floor, tresillo, E(5,12), bossa-ish */
@@ -758,6 +759,7 @@ static void set_defaults(Plugin *w) {
     };
     for (int l = 1; l <= 8; l++) {
         std::string b = "l" + std::to_string(l) + "_";
+        put(b + "mode", 1, false);
         put(b + "enable", l <= 4 ? 1 : 0, l == 8);   /* one re-read after the last write: it also fills the sel_* copies */
         if (l <= 4) {
             put(b + "steps", pat[l - 1].steps, false);

@@ -134,7 +134,11 @@ int main(void) {
             for (int i = 0; i < NPARAMS; i++) if (!strcmp(PARAMS[i].key, k)) { if ((b->getP(b, i) > 0.5f) != (l <= 4)) bad++; }
         }
         for (int i = 0; i < NPARAMS; i++) if (!strcmp(PARAMS[i].key, "l2_steps")) { b->d(b, 7, i, 0, d, 0); if (strcmp(d, "8")) bad++; }
-        printf("fresh instance defaults: %s (lanes 1-4 on, lane 2 = 8 steps)\n", bad ? "WRONG" : "ok");
+        for (int l = 1; l <= 8; l++) {
+            char k[16]; snprintf(k, sizeof k, "l%d_mode", l);
+            for (int i = 0; i < NPARAMS; i++) if (!strcmp(PARAMS[i].key, k) && b->getP(b, i) < 0.9f) bad++;
+        }
+        printf("fresh instance defaults: %s (lanes 1-4 on, lane 2 = 8 steps, all lanes DRUM)\n", bad ? "WRONG" : "ok");
         fails += bad != 0;
     }
 

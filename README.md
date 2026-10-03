@@ -26,7 +26,7 @@ Both tabs have **DRUM MODE ALL** (every lane to drum mode) and **RANDOMISE ALL**
 | **LANES** | The lane you are editing. A lane stepper (◀ LANE 1 ▶) chooses it. Its pattern is drawn as a circle with the play-head, with a RANDOMISE button for that lane in the corner of the panel. Knobs for STEPS, FILL, SHIFT, LOOP, GATE, VELOCITY, HUMANIZE, NOTE and MID CH., a division stepper, a NOTE / DRUM switch and the lane's enable. Q-Links 1-8 are steps, fill, shift, loop, gate, velocity, note and MID CH. (HUMANIZE is touch-only). |
 | **ALL** | All 8 lanes as rows: an enable lamp, the pattern as a row of cells with the play-head, and a RANDOMISE button for that lane. Q-Links 1-8 are the lane enables. |
 
-A new instance starts with lanes 1-4 on and 5-8 off, each with its own Euclidean pattern: 16 steps with 4 hits (four on
+A new instance starts with every lane in drum mode, lanes 1-4 on and 5-8 off, each of the four with its own Euclidean pattern: 16 steps with 4 hits (four on
 the floor), 8 with 3 (tresillo), 12 with 5, and 16 with 5. A saved project restores its own settings instead.
 
 Switching a lane to DRUM makes the engine set its note to that lane's own General MIDI drum slot (lane 1 is 36, lane 2
