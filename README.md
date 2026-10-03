@@ -1,5 +1,7 @@
 # mpc-vst-euclidier
 
+💬 Questions or feedback? Join the [Open MPC Discord](https://discord.gg/sRRysZSgu3).
+
 Euclidier as a native plugin for Akai MPC OS standalone devices (Force, MPC Live/One/X/Key): an 8-lane Euclidean
 MIDI sequencer with its own MPC screen skin and Q-Links. It is a port of
 [force-euclidier](https://github.com/sd88me/force-euclidier) (a fork of
