@@ -158,6 +158,7 @@ const unsigned char SEQS = 8;
 
 EQSEQ *SQ = new EQSEQ[8]; // creante the 8 track sequencer in an array
 string ctrlSockPath = "/tmp/euclidier_ctrl.sock";
+string midiClientName = "Euclidier"; // the ALSA client name of both MIDI ports (--client-name; one per plugin instance)
 void startCtrlSocket();
 int main(int argc, char *argv[])
 {
@@ -167,6 +168,10 @@ int main(int argc, char *argv[])
             bgprocess = true;
         else if (string(argv[a]) == "--ctrl-sock" && a + 1 < argc)
             ctrlSockPath = argv[++a];
+        else if (string(argv[a]) == "--client-name" && a + 1 < argc)
+            midiClientName = argv[++a];
+        else if (string(argv[a]) == "--clock-from" && a + 1 < argc) // only follow the clock sent by this ALSA client
+            rtmidi_clock_from = argv[++a];
     }
     // || string(argv[0]) == "/media/662522/AddOns/nodeServer/modules/euclidier";
 
@@ -178,11 +183,11 @@ int main(int argc, char *argv[])
     string tss = string(c, l > 0 ? l : 0);
     basePath = tss.length() > 0 ? tss.append(BANK) : "euclidier" + BANK;
     BOOT_TIME = now();
-    midiIn = new RtMidiIn();
+    midiIn = new RtMidiIn(RtMidi::UNSPECIFIED, midiClientName);
     midiIn->setCallback(&onMIDI);
     midiIn->ignoreTypes(false, false, false); // dont ignore clocK
 
-    midiOut = new RtMidiOut();
+    midiOut = new RtMidiOut(RtMidi::UNSPECIFIED, midiClientName);
     if (CONNECT_AKAI_NETWORK)
     {
         HWIN = new RtMidiIn();

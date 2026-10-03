@@ -66,6 +66,10 @@
 #include <vector>
 
 /************************************************************************/
+/* When set (euclidier --clock-from <ALSA client name>), the ALSA input drops clock, start, stop, continue and song-position
+ * events that come from any other client: MPC sends its own clock to every MIDI port, and the plugin feeds the engine its own. */
+extern std::string rtmidi_clock_from;
+
 /*! \class RtMidiError
     \brief Exception handling class for RtMidi.
 
@@ -271,7 +275,7 @@ class RTMIDI_DLL_PUBLIC RtMidiIn : public RtMidi
     \param queueSizeLimit An optional size of the MIDI input queue can be specified.
   */
   RtMidiIn( RtMidi::Api api=UNSPECIFIED,
-            const std::string& clientName = "Mockba",
+            const std::string& clientName = "Euclidier",
             unsigned int queueSizeLimit = 100 );
 
   //! If a MIDI connection is still open, it will be closed by the destructor.
@@ -401,7 +405,7 @@ class RTMIDI_DLL_PUBLIC RtMidiOut : public RtMidi
     JACK (OS-X).
   */
   RtMidiOut( RtMidi::Api api=UNSPECIFIED,
-             const std::string& clientName = "Mockba" );
+             const std::string& clientName = "Euclidier" );
 
   //! The destructor closes any open MIDI connections.
   ~RtMidiOut( void ) throw();

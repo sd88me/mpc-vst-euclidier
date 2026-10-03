@@ -111,7 +111,16 @@ enum { effFlagsCanReplacing = 1 << 4, effFlagsProgramChunks = 1 << 5, effFlagsIs
 
 static FILE *g_log;
 #define LOG(...) do { if (g_log) { std::fprintf(g_log, __VA_ARGS__); std::fflush(g_log); } } while (0)
-static std::atomic<int> g_instance_count{0};   /* ALSA client names */
+/* One slot per live instance (lowest free), so names stay stable when an instance is removed and inserted again: the first
+ * instance is "Euclidier" / "Euclidier Clock", the next "Euclidier 2" / "Euclidier Clock 2", and MPC keeps a device's settings. */
+static std::mutex g_slot_mu;
+static unsigned g_slot_mask = 0;
+static int slot_acquire() {
+    std::lock_guard<std::mutex> lk(g_slot_mu);
+    for (int i = 0; i < 31; i++) if (!(g_slot_mask & (1u << i))) { g_slot_mask |= 1u << i; return i; }
+    return 31;
+}
+static void slot_release(int i) { std::lock_guard<std::mutex> lk(g_slot_mu); if (i >= 0) g_slot_mask &= ~(1u << i); }
 static std::atomic<int> g_sock_seq{0};         /* control-socket paths: counted even when ALSA is unavailable */
 
 /* ---- default location of the standalone engine binary, override with
@@ -173,6 +182,9 @@ struct Plugin {
     int dest_client = -1, dest_port = -1;
 #endif
     char chunk[4096] = {0};
+    std::string clock_name;   /* our ALSA clock client: the only clock the engine follows (--clock-from) */
+    std::string engine_client;   /* the engine's ALSA client name (--client-name): where the clock is sent */
+    int slot = -1;
 
     /* Step displays (make_skin.py): per-lane pattern views polled by the worker, turned into the values of the
      * display-only cell/ring params, and pushed to the host from processReplacing when they change. */
@@ -411,9 +423,15 @@ static bool spawn_engine(Plugin *w) {
     for (auto &s : keep_env) envp.push_back(&s[0]);
     envp.push_back(nullptr);
 
-    char *argv[] = {
-        (char *)bin, (char *)"-v", (char *)"--ctrl-sock", (char *)w->sockpath.c_str(), nullptr
-    };
+    /* MPC sends its own MIDI clock to every MIDI port (a device's "sync" setting), on top of the clock this plugin makes from
+     * the host transport: two clocks run the engine at double speed or worse, so it follows only ours. */
+    std::vector<char *> args = {(char *)bin, (char *)"-v", (char *)"--ctrl-sock", (char *)w->sockpath.c_str()};
+    if (!w->clock_name.empty()) {
+        args.push_back((char *)"--clock-from"); args.push_back((char *)w->clock_name.c_str());
+        args.push_back((char *)"--client-name"); args.push_back((char *)w->engine_client.c_str());
+    }
+    args.push_back(nullptr);
+    char **argv = args.data();
     pid_t pid;
     int rc = posix_spawn(&pid, bin, nullptr, nullptr, argv, envp.data());
     if (rc != 0) { LOG("[euclidier_vst] posix_spawn failed: %s\n", strerror(rc)); return false; }
@@ -439,7 +457,7 @@ static bool spawn_engine(Plugin *w) {
  * hot-detects any ALSA seq port and the user routes it as a track's MIDI
  * input, same as every other MIDI-generator port (docs/NOTES.md).
  * ------------------------------------------------------------------------- */
-static bool find_engine_input_port(int &client, int &port) {
+static bool find_engine_input_port(const std::string &clientName, int &client, int &port) {
     snd_seq_t *probe;
     if (snd_seq_open(&probe, "default", SND_SEQ_OPEN_DUPLEX, 0) < 0) return false;
     snd_seq_client_info_t *cinfo;
@@ -450,12 +468,14 @@ static bool find_engine_input_port(int &client, int &port) {
     bool found = false;
     while (!found && snd_seq_query_next_client(probe, cinfo) >= 0) {
         int cl = snd_seq_client_info_get_client(cinfo);
+        const char *cname = snd_seq_client_info_get_name(cinfo);
+        if (!cname || clientName != cname) continue;   /* exactly this instance's engine: not MPC's own "Euclidier" ports */
         snd_seq_port_info_set_client(pinfo, cl);
         snd_seq_port_info_set_port(pinfo, -1);
         while (!found && snd_seq_query_next_port(probe, pinfo) >= 0) {
             const char *name = snd_seq_port_info_get_name(pinfo);
             unsigned int caps = snd_seq_port_info_get_capability(pinfo);
-            if (name && std::strstr(name, "Euclidier") && (caps & SND_SEQ_PORT_CAP_WRITE)) {
+            if (name && (caps & SND_SEQ_PORT_CAP_WRITE)) {
                 client = cl; port = snd_seq_port_info_get_port(pinfo);
                 found = true;
             }
@@ -466,18 +486,20 @@ static bool find_engine_input_port(int &client, int &port) {
 }
 static void alsa_open(Plugin *w) {
     if (snd_seq_open(&w->seq, "default", SND_SEQ_OPEN_OUTPUT, 0) < 0) { w->seq = nullptr; return; }
-    int n = g_instance_count.fetch_add(1);
-    char name[32];
-    if (n == 0) std::snprintf(name, sizeof name, "Euclidier Clock");
-    else std::snprintf(name, sizeof name, "Euclidier Clock %d", n + 1);
+    w->slot = slot_acquire();
+    char name[32], eng[32];
+    if (w->slot == 0) { std::snprintf(name, sizeof name, "Euclidier Clock"); std::snprintf(eng, sizeof eng, "Euclidier"); }
+    else { std::snprintf(name, sizeof name, "Euclidier Clock %d", w->slot + 1); std::snprintf(eng, sizeof eng, "Euclidier %d", w->slot + 1); }
     snd_seq_set_client_name(w->seq, name);
+    w->clock_name = name;
+    w->engine_client = eng;
     w->seq_port = snd_seq_create_simple_port(w->seq, "Clock Out",
         SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ,
         SND_SEQ_PORT_TYPE_MIDI_GENERIC | SND_SEQ_PORT_TYPE_APPLICATION);
 }
 static void alsa_send_byte(Plugin *w, unsigned char b) {
     if (!w->seq || w->seq_port < 0) return;
-    if (w->dest_client < 0 && !find_engine_input_port(w->dest_client, w->dest_port)) return;
+    if (w->dest_client < 0 && !find_engine_input_port(w->engine_client, w->dest_client, w->dest_port)) return;
     snd_seq_event_t ev;
     snd_seq_ev_clear(&ev);
     snd_seq_ev_set_source(&ev, w->seq_port);
@@ -492,6 +514,8 @@ static void alsa_send_byte(Plugin *w, unsigned char b) {
 static void alsa_close(Plugin *w) {
     if (w->seq) snd_seq_close(w->seq);
     w->seq = nullptr;
+    slot_release(w->slot);
+    w->slot = -1;
 }
 #else
 static void alsa_open(Plugin *) {}
@@ -780,8 +804,8 @@ extern "C" __attribute__((visibility("default"))) AEffect *VSTPluginMain(audioMa
     static std::once_flag once;
     std::call_once(once, build_vtable);
     for (int i = 0; i < NPARAMS; i++) { w->cache[i].store(PARAMS[i].def); w->told[i].store(-1.0f); }
+    alsa_open(w);   /* first: the engine is told which ALSA client its clock comes from */
     spawn_engine(w);
-    alsa_open(w);
     /* one-time blocking fill at load (counts against open time, not per-block
      * budget -- bench.sh measured "open 1105.6 ms" already, see this file's
      * header comment); every SET/GET after this is cache-only + async. */

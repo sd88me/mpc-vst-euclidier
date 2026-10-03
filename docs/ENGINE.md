@@ -41,6 +41,15 @@ from the plugin or the control socket; use MIDI CC. Known quirks inherited from 
 `rand() % diff` with `diff == 0` possible, and upstream's README lists 1/64 as division 7 when the engine maps 7 to
 1/24.
 
+## Command line
+
+| Option | Meaning |
+|---|---|
+| `-v` | run quietly (no console output) |
+| `--ctrl-sock <path>` | the control socket's path (below) |
+| `--client-name <name>` | the ALSA client name of the engine's two MIDI ports (default `Euclidier`); the plugin gives each instance its own, so the port shows up as "Euclidier", "Euclidier 2" and so on |
+| `--clock-from <client name>` | follow only the MIDI clock, start, stop, continue and song-position messages sent by that ALSA client, and drop the rest. The plugin uses it because MPC also sends its own clock to every MIDI port (a device's "sync" setting), and two clocks would run the engine too fast |
+
 ## Control socket
 
 `euclidier -v --ctrl-sock <path>` listens on a Unix socket (default `/tmp/euclidier_ctrl.sock`). One request per
