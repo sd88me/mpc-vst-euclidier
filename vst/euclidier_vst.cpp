@@ -63,6 +63,7 @@
 
 #include "params.h"
 #include "popup.h"    /* mpc-vst-plugins wrapper/popup.h, copied into build/ by build.sh */
+#include "plugin_dir.h"   /* mpc-vst-plugins wrapper/plugin_dir.h: the folder this .so was loaded from */
 
 extern char **environ;
 
@@ -117,8 +118,15 @@ static std::atomic<int> g_sock_seq{0};         /* control-socket paths: counted 
  * EUCLIDIER_BIN for host testing. ../DESIGN.md: already deployed at this path
  * on the Force. -------------------------------------------------------------- */
 static const char *engine_path() {
+    static std::string path;
     const char *p = getenv("EUCLIDIER_BIN");
-    return p && *p ? p : "/media/662522/AddOns/Euclidier/euclidier";
+    if (p && *p) return p;
+    char dir[512];
+    if (mpc_plugin_dir(dir, sizeof dir)) {   /* the engine shipped in the plugin folder, next to this .so */
+        path = std::string(dir) + "/euclidier";
+        if (access(path.c_str(), X_OK) == 0) return path.c_str();
+    }
+    return "/media/662522/AddOns/Euclidier/euclidier";   /* force-euclidier's own install */
 }
 
 /* ---------------------------------------------------------------------------
@@ -750,11 +758,11 @@ static void set_defaults(Plugin *w) {
     };
     for (int l = 1; l <= 8; l++) {
         std::string b = "l" + std::to_string(l) + "_";
-        put(b + "enable", l <= 4 ? 1 : 0, false);
+        put(b + "enable", l <= 4 ? 1 : 0, l == 8);   /* one re-read after the last write: it also fills the sel_* copies */
         if (l <= 4) {
             put(b + "steps", pat[l - 1].steps, false);
             put(b + "fill", pat[l - 1].fill, false);
-            put(b + "shift", 0, l == 4);   /* one re-read after the last: it also fills the sel_* copies */
+            put(b + "shift", 0, false);
         }
     }
 }
