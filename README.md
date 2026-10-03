@@ -1,14 +1,11 @@
-# mpc-vst-euclidier
+# Euclidier
 
 💬 Questions or feedback? Join the [Open MPC Discord](https://discord.gg/sRRysZSgu3).
 
 Euclidier as a native plugin for Akai MPC OS standalone devices (Force, MPC Live/One/X/Key): an 8-lane Euclidean
 MIDI sequencer with its own MPC screen skin and Q-Links. This repo holds the plugin and the sequencer engine it runs.
 The engine is based on [intelliriffer/EUCLIDIER-CONSOLE](https://github.com/intelliriffer/EUCLIDIER-CONSOLE) by Amit
-Talwar, reworked for the Force (see [credits](#credits-and-licence)).
-
-Status: working and tried on a Force. Download the zip from the
-[Releases page](https://github.com/sd88me/mpc-vst-euclidier/releases) (under *Assets*, not "Source code").
+Talwar, reworked for the MPC/Force (see [credits](#credits-and-licence)).
 
 ## What it does
 
@@ -17,6 +14,8 @@ Eight independent lanes each spread a number of hits (**fill**) as evenly as pos
 a time division. The plugin makes no sound: it plays MIDI into other tracks, and it follows the project transport and
 tempo, so edits stay in phase with the beat.
 
+<img width="320" height="200" alt="2026-10-03T124201676Z" src="https://github.com/user-attachments/assets/94c88fd0-436b-4d1a-8aa4-cb8a376adb89" />
+<img width="320" height="200" alt="2026-10-03T124157924Z" src="https://github.com/user-attachments/assets/708f8f74-1ec5-4dd7-bf24-7a0d2a1bbebe" />
 ## The screen
 
 Two tabs, each with its own Q-Link page. The screen shows live state: patterns and play-heads follow the engine.
