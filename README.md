@@ -18,13 +18,16 @@ tempo, so edits stay in phase with the beat.
 
 ## The screen
 
-Three tabs, each with its own Q-Link page. The screen shows live state: patterns and play-heads follow the engine.
+Two tabs, each with its own Q-Link page. The screen shows live state: patterns and play-heads follow the engine.
+Both tabs have **DRUM MODE ALL** (every lane to drum mode) and **RANDOMISE ALL** in the top bar.
 
 | Tab | What is on it |
 |---|---|
-| **MAIN** | A lane stepper (◀ LANE 1 ▶) choosing the lane to edit. The lane's pattern drawn as a circle, with the play-head. Knobs for STEPS, FILL, SHIFT, LOOP, GATE, VELOCITY, HUMANIZE, NOTE and MID CH., a division stepper, a NOTE / DRUM switch and the lane's enable, with **ALL LANES DRUM** in the top bar. Q-Links 1-8 are steps, fill, shift, loop, gate, velocity, note and MID CH. (HUMANIZE is touch-only). |
-| **LANES** | All 8 lanes as rows: an enable lamp, the pattern as a row of cells with the play-head, and a readout such as `16/4 SH0` (steps / fill / shift). **ALL LANES DRUM** in the top bar (also on MAIN) puts every lane in drum mode. Q-Links 1-8 are the lane enables. |
-| **RANDOMISE** | Eight lane buttons you can multi-select, and a RANDOMISE button. With none picked, all 8 lanes are randomised. |
+| **LANES** | The lane you are editing. A lane stepper (◀ LANE 1 ▶) chooses it. Its pattern is drawn as a circle with the play-head, with a RANDOMISE button for that lane in the corner of the panel. Knobs for STEPS, FILL, SHIFT, LOOP, GATE, VELOCITY, HUMANIZE, NOTE and MID CH., a division stepper, a NOTE / DRUM switch and the lane's enable. Q-Links 1-8 are steps, fill, shift, loop, gate, velocity, note and MID CH. (HUMANIZE is touch-only). |
+| **ALL** | All 8 lanes as rows: an enable lamp, the pattern as a row of cells with the play-head, and a RANDOMISE button for that lane. Q-Links 1-8 are the lane enables. |
+
+A new instance starts with lanes 1-4 on and 5-8 off, each with its own Euclidean pattern: 16 steps with 4 hits (four on
+the floor), 8 with 3 (tresillo), 12 with 5, and 16 with 5. A saved project restores its own settings instead.
 
 Switching a lane to DRUM makes the engine set its note to that lane's own General MIDI drum slot (lane 1 is 36, lane 2
 is 37, and so on). The NOTE knob follows.
@@ -42,6 +45,7 @@ cells at the 16-step size and the circle spreads its steps evenly. The 32-step r
 - **Display only.** Tapping a step does not edit it. Patterns come from steps, fill, shift and loop.
 - **No preset page.** The engine's 128 preset slots are not on the screen. The plugin's settings are saved with the MPC
   project like any other plugin.
+- **Randomise** hits one lane or all of them; there is no lane picker.
 
 ## Setting it up
 
@@ -62,7 +66,8 @@ cells at the 16-step size and the circle spreads its steps evenly. The 32-step r
 
 - `vst/euclidier_vst.cpp` is a hand-written VST2 wrapper. Parameter changes only touch an in-memory cache; a worker
   thread sends them to the engine and polls it about 33 times a second for each lane's `l<N>_pattern`
-  (`steps|bits|play|loop|enabled|selected`). Changes are reported to the host from `processReplacing` with
+  (`steps|bits|play|loop|enabled|selected`). Randomise buttons send the engine an ordered script (lane flag, `rand_go`, clear
+  the flags), because the engine's randomise acts on flagged lanes. Changes are reported to the host from `processReplacing` with
   `audioMasterAutomate`, because MPC does not redraw engine-driven values on its own.
 - The step displays are display-only parameters, one per cell per size class (`g<lane>_<cap>_<slot>` for the lane rows,
   `c<cap>_<slot>` for the circle). A cell is hidden, off, on, or (for the play-head) off or on with the play-head on it.
@@ -81,7 +86,7 @@ vst/build.sh          # needs Docker and a checkout of mpc-vst-plugins at ../../
 It runs `make_skin.py` and `gen_vst.py`, builds the plugin and its offline host test, runs the test, then cross-builds
 `vst/build/euclidier.so` for armhf. The skin is in `vst/build/skin/`. The host test (`vst/host_test.c`) checks, among
 other things, two instances, popups, the pattern cells and play-head against a stand-in engine
-(`vst/fake_engine.py`), the lane stepper and ALL LANES DRUM. The test container has no ALSA sequencer, so the real
+(`vst/fake_engine.py`), the lane stepper, fresh-instance defaults, randomise (one lane, the selected lane, all) and DRUM MODE ALL. The test container has no ALSA sequencer, so the real
 engine can't run in it, which is why the stand-in speaks the engine's control-socket protocol.
 
 ## Files

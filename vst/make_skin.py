@@ -95,7 +95,7 @@ def make_images():
                 d = ImageDraw.Draw(im)
                 d.ellipse([0, 0, 2 * r, 2 * r], fill=col + (255,), outline=(CUR if cur else OUTLINE) + (255,), width=3 if cur else 1)
                 save(im, "dot_%d_%s%s.png" % (cap, "cur_" if cur else "", name))
-    for size in (44, 84):   # on/off toggles: lime lamp / dark lamp
+    for size in (44,):   # on/off toggles: lime lamp / dark lamp
         for name, face, ring in (("off", (44, 49, 44), (74, 79, 72)), ("on", (143, 217, 74), (185, 236, 124))):
             big = Image.new("RGBA", (size * 4, size * 4), (0, 0, 0, 0))
             d = ImageDraw.Draw(big)
@@ -129,13 +129,13 @@ def make_params():
             q["max"] = min(q["max"], MAX_STEPS)
         q["key"] = "sel_" + k
         params.append(q)
-    for n in range(1, 9):   # the randomise lane picker: the engine's rand_l<N> flags (multi-select)
-        params.append({"key": "rand_l%d" % n, "name": "Lane %d" % n, "options": ["OFF", "ON"]})
+    params.append({"key": "rand_all", "name": "Randomise All", "momentary": True})
+    params.append({"key": "rand_sel", "name": "Randomise Lane", "momentary": True})   # the lane selected on MAIN   # handled in the plugin (ordered engine script)
+    for n in range(1, 9):
+        params.append({"key": "rand_%d" % n, "name": "Randomise %d" % n, "momentary": True})
     params.append({"key": "all_drum", "name": "All Drum", "momentary": True})   # every lane to DRUM mode (handled in the plugin)
     for k, tgt, d in (("sel_prev", "sel", -1), ("sel_next", "sel", 1), ("sel_div_prev", "sel_div", -1), ("sel_div_next", "sel_div", 1)):
         params.append({"key": k, "name": k, "momentary": True, "step_of": tgt, "step_delta": d})
-    for n in range(1, 9):
-        params.append({"key": "l%d_info" % n, "name": "L%d Info" % n, "display": "string", "min": 0, "max": 1, "default": 0})
     for n in range(1, 9):
         for cap in GRID_CAPS:
             for s in range(cap):
@@ -154,10 +154,12 @@ def layout():
     a(theme)
     a("")
     # ---- DETAIL
-    a("[tab MAIN]")
+    a("[tab LANES]")
     a('text cx=44 cy=118 label="EUCLIDIER" align=left weight=700 size=3 spacing=3')
-    a('button cx=1130 cy=118 label="ALL LANES DRUM" key=all_drum')
+    a('button cx=915 cy=118 label="DRUM MODE ALL" key=all_drum')
+    a('button cx=1135 cy=118 label="RANDOMISE ALL" key=rand_all')
     a('frame x=36 y=150 w=590 h=548 title="PATTERN"')
+    a('button cx=532 cy=654 label="RANDOMISE" key=rand_sel')
     a('stepper cx=331 cy=214 w=320 h=44 label="" key=sel prev=sel_prev next=sel_next label_align=center')
     a('art file="images/circle_guide.png" x=%d y=%d w=%d h=%d fit=stretch' % (CCX - CIRC_BOX // 2, CCY - CIRC_BOX // 2, CIRC_BOX, CIRC_BOX))
     for cap in CIRCLE_CAPS:
@@ -175,12 +177,13 @@ def layout():
     a('stepper cx=800 cy=628 w=260 h=44 label="DIV" key=sel_div prev=sel_div_prev next=sel_div_next label_align=center')
     a('enum_h cx=1040 cy=628 label="MODE" key=sel_mode sw=80')
     a('toggle cx=1190 cy=628 label="ON" key=sel_enable img=images/lamp44_off.png img_on=images/lamp44_on.png')
-    a('qlinks "MAIN" = sel_steps,sel_fill,sel_shift,sel_loop,sel_gate,sel_vel,sel_note,sel_ch')
+    a('qlinks "LANES" = sel_steps,sel_fill,sel_shift,sel_loop,sel_gate,sel_vel,sel_note,sel_ch')
     a("")
     # ---- LANES
-    a("[tab LANES]")
+    a("[tab ALL]")
     a('text cx=44 cy=118 label="EUCLIDIER" align=left weight=700 size=3 spacing=3')
-    a('button cx=1130 cy=118 label="ALL LANES DRUM" key=all_drum')
+    a('button cx=915 cy=118 label="DRUM MODE ALL" key=all_drum')
+    a('button cx=1135 cy=118 label="RANDOMISE ALL" key=rand_all')
     a('frame x=36 y=150 w=1207 h=548 title="LANES"')
     for n in range(1, 9):
         cy = ROW0 + (n - 1) * ROW_PITCH
@@ -191,18 +194,9 @@ def layout():
                 x = GX0 + int(round(s * pitch))
                 a('picture x=%d y=%d w=%d h=%d key=g%d_%d_%d files=",%s"'
                   % (x, cy - CELL_H // 2, cw, CELL_H, n, cap, s, ",".join("images/cell_%d_%s.png" % (cap, k) for k in CELL_FILES[:len(grid_opts(cap)) - 1])))
-        a('readout cx=1135 cy=%d w=190 h=40 label="" key=l%d_info label_align=center' % (cy, n))
-    a('qlinks "LANES" = ' + ",".join("l%d_enable" % n for n in range(1, 9)))
+        a('button cx=1135 cy=%d label="RANDOMISE" key=rand_%d' % (cy, n))
+    a('qlinks "ALL" = ' + ",".join("l%d_enable" % n for n in range(1, 9)))
     a("")
-    # ---- RANDOMISE
-    a("[tab RANDOMISE]")
-    a('text cx=44 cy=118 label="EUCLIDIER" align=left weight=700 size=3 spacing=3')
-    a('frame x=36 y=150 w=1207 h=548 title="RANDOMISE"')
-    a('text cx=640 cy=225 label="PICK THE LANES TO RANDOMISE (NONE PICKED = ALL)" align=center weight=600 size=1.6 spacing=2')
-    for n in range(1, 9):
-        a('toggle cx=%d cy=330 label="%d" key=rand_l%d img=images/lamp84_off.png img_on=images/lamp84_on.png' % (130 + (n - 1) * 145, n, n))
-    a('button cx=640 cy=520 label="RANDOMISE" key=rand_go')
-    a('qlinks "RANDOMISE" = ' + ",".join("rand_l%d" % n for n in range(1, 9)) + "")
     return "\n".join(o) + "\n"
 
 

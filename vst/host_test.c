@@ -98,12 +98,11 @@ int main(void) {
 
     /* step displays: the fake engine's lane 1 has 12 steps -> the 16-slot class shows 12 cells, the 8/4/32 classes
      * stay hidden, the play-head cell follows, the lane info text comes through, and sel steps */
-    int ik[64], ni = 0, i16[32], n16 = 0, info = -1, nsel = -1, nnext = -1;
+    int ik[64], ni = 0, i16[32], n16 = 0, nsel = -1, nnext = -1;
     (void)ik; (void)ni;
     for (int i = 0; i < NPARAMS; i++) {
         int c, s2;
         if (sscanf(PARAMS[i].key, "g1_16_%d", &s2) == 1 && n16 < 32) i16[n16++] = i;
-        if (!strcmp(PARAMS[i].key, "l1_info")) info = i;
         if (!strcmp(PARAMS[i].key, "sel")) nsel = i;
         if (!strcmp(PARAMS[i].key, "sel_next")) nnext = i;
     }
@@ -118,15 +117,54 @@ int main(void) {
     }
     int shown = 0, wrong = 0;
     for (int j = 0; j < n16; j++) { if (a->getP(a, i16[j]) > 0.0f) shown++; }
-    char t1[64]; a->d(a, 7, info, 0, t1, 0);
-    printf("lane 1 at 12 steps: 16-slot cells shown %d (expect 12), ring moved %d times, info '%s' (expect 12/4 SH0)\n", shown, moved, t1);
+    printf("lane 1 at 12 steps: 16-slot cells shown %d (expect 12), play-head cell moved %d times\n", shown, moved);
     for (int i = 0; i < NPARAMS; i++) { int c, s2; if (sscanf(PARAMS[i].key, "g1_%d_%d", &c, &s2) == 2 && c != 16 && a->getP(a, i) > 0.0f) wrong++; }
-    fails += !(shown == 12 && moved > 3 && !wrong && !strcmp(t1, "12/4 SH0"));
+    fails += !(shown == 12 && moved > 3 && !wrong);
     a->setP(a, nnext, 1.0f);
     for (int k = 0; k < 20; k++) { usleep(10000); a->pr(a, 0, out, 128); }
     char t2[64]; a->d(a, 7, nsel, 0, t2, 0);
     printf("sel_next -> %s (expect LANE 2)\n", t2);
     fails += !!strcmp(t2, "LANE 2");
+
+    /* defaults on a fresh instance (instance b has had no chunk): lanes 1-4 on with their own patterns, 5-8 off */
+    {
+        char d[64]; int bad = 0;
+        for (int l = 1; l <= 8; l++) {
+            char k[16]; snprintf(k, sizeof k, "l%d_enable", l);
+            for (int i = 0; i < NPARAMS; i++) if (!strcmp(PARAMS[i].key, k)) { if ((b->getP(b, i) > 0.5f) != (l <= 4)) bad++; }
+        }
+        for (int i = 0; i < NPARAMS; i++) if (!strcmp(PARAMS[i].key, "l2_steps")) { b->d(b, 7, i, 0, d, 0); if (strcmp(d, "8")) bad++; }
+        printf("fresh instance defaults: %s (lanes 1-4 on, lane 2 = 8 steps)\n", bad ? "WRONG" : "ok");
+        fails += bad != 0;
+    }
+
+    /* randomise: rand_3 reaches only lane 3 (the stand-in engine sets randomised lanes to 7 steps), rand_all every lane */
+    {
+        int r3 = -1, ra = -1, st[8];
+        for (int i = 0; i < NPARAMS; i++) {
+            if (!strcmp(PARAMS[i].key, "rand_3")) r3 = i;
+            if (!strcmp(PARAMS[i].key, "rand_all")) ra = i;
+            for (int l = 1; l <= 8; l++) { char k[16]; snprintf(k, sizeof k, "l%d_steps", l); if (!strcmp(PARAMS[i].key, k)) st[l - 1] = i; }
+        }
+        char d[8][64];
+        a->setP(a, r3, 1.0f);
+        for (int k = 0; k < 25; k++) { usleep(10000); a->pr(a, 0, out, 128); }
+        for (int l = 0; l < 8; l++) a->d(a, 7, st[l], 0, d[l], 0);
+        int only3 = !strcmp(d[2], "7") && strcmp(d[0], "7") && strcmp(d[1], "7") && strcmp(d[3], "7");
+        int rs = -1; for (int i = 0; i < NPARAMS; i++) if (!strcmp(PARAMS[i].key, "rand_sel")) rs = i;
+        a->setP(a, rs, 1.0f);   /* the selected lane is LANE 2 (sel_next above) */
+        for (int k = 0; k < 25; k++) { usleep(10000); a->pr(a, 0, out, 128); }
+        a->d(a, 7, st[1], 0, d[1], 0); a->d(a, 7, st[0], 0, d[0], 0);
+        int selonly = !strcmp(d[1], "7") && strcmp(d[0], "7");
+        printf("randomise selected lane: only lane 2 %d\n", selonly);
+        fails += !selonly;
+        a->setP(a, ra, 1.0f);
+        for (int k = 0; k < 25; k++) { usleep(10000); a->pr(a, 0, out, 128); }
+        int all = 1;
+        for (int l = 0; l < 8; l++) { a->d(a, 7, st[l], 0, d[l], 0); all &= !strcmp(d[l], "7"); }
+        printf("randomise: lane 3 alone %d, all lanes %d\n", only3, all);
+        fails += !(only3 && all);
+    }
 
     /* all_drum: every lane's mode (l<N>_mode, option 1 = DRUM) */
     int alld = -1; for (int i = 0; i < NPARAMS; i++) if (!strcmp(PARAMS[i].key, "all_drum")) alld = i;

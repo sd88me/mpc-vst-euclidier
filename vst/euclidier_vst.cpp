@@ -182,6 +182,7 @@ struct Plugin {
     std::mutex qmu;
     std::condition_variable qcv;
     std::unordered_map<std::string, std::string> pending; /* key -> value string, coalesced */
+    std::vector<std::pair<std::string, std::string>> script; /* ordered SETs (randomise: mask, go, clear), run after `pending` */
     bool want_refresh = false;
     bool stop_io = false;
 };
@@ -323,14 +324,12 @@ static void poll_views(Plugin *w, int tick) {
             std::lock_guard<std::mutex> lk(w->lvmu);
             w->lv[n] = L;
         }
-        if (tick % 8 == 0) {
+        char key[24];
+        std::snprintf(key, sizeof key, "l%d_info", n + 1);
+        auto it = g_kidx.find(key);
+        if (tick % 8 == 0 && it != g_kidx.end()) {   /* the lane readout, if the skin has one */
             std::snprintf(k, sizeof k, "l%d_info", n + 1);
-            if (ctrl_request(w->sockpath, std::string("GET ") + k, r)) {
-                char key[24];
-                std::snprintf(key, sizeof key, "l%d_info", n + 1);
-                auto it = g_kidx.find(key);
-                if (it != g_kidx.end()) { std::lock_guard<std::mutex> lk(w->lvmu); w->text[it->second] = r; }
-            }
+            if (ctrl_request(w->sockpath, std::string("GET ") + k, r)) { std::lock_guard<std::mutex> lk(w->lvmu); w->text[it->second] = r; }
         }
     }
     compute_views(w);
@@ -345,15 +344,21 @@ static void poll_views(Plugin *w, int tick) {
 static void io_worker(Plugin *w) {
     std::unique_lock<std::mutex> lk(w->qmu);
     for (int tick = 0;; tick++) {
-        w->qcv.wait_for(lk, std::chrono::milliseconds(30), [w] { return w->stop_io || !w->pending.empty() || w->want_refresh; });
+        w->qcv.wait_for(lk, std::chrono::milliseconds(30), [w] { return w->stop_io || !w->pending.empty() || !w->script.empty() || w->want_refresh; });
         if (w->stop_io) return;
         auto todo = std::move(w->pending);
         w->pending.clear();
+        auto steps = std::move(w->script);
+        w->script.clear();
         bool refresh = w->want_refresh;
         w->want_refresh = false;
         lk.unlock();
 
         for (auto &kv : todo) {
+            std::string reply;
+            ctrl_request(w->sockpath, "SET " + kv.first + " " + kv.second, reply);
+        }
+        for (auto &kv : steps) {
             std::string reply;
             ctrl_request(w->sockpath, "SET " + kv.first + " " + kv.second, reply);
         }
@@ -366,6 +371,12 @@ static void io_worker(Plugin *w) {
         poll_views(w, tick);
         lk.lock();
     }
+}
+static void queue_script(Plugin *w, const std::vector<std::pair<std::string, std::string>> &steps, bool also_refresh) {
+    std::lock_guard<std::mutex> lk(w->qmu);
+    w->script.insert(w->script.end(), steps.begin(), steps.end());
+    if (also_refresh) w->want_refresh = true;
+    w->qcv.notify_one();
 }
 static void queue_set(Plugin *w, const std::string &key, const std::string &val, bool also_refresh) {
     std::lock_guard<std::mutex> lk(w->qmu);
@@ -574,6 +585,24 @@ static void setParameter(AEffect *e, int32_t i, float n) {
         }
         return;
     }
+    if (p->momentary && !std::strncmp(p->key, "rand_", 5) && (!std::strcmp(p->key, "rand_all") || !std::strcmp(p->key, "rand_sel") || (p->key[5] >= '1' && p->key[5] <= '8' && !p->key[6]))) {
+        /* randomise one lane (rand_1..rand_8) or all: the engine's rand_go acts on the rand_l<N> flags (none set = all), so
+         * set the flags, fire, clear them: an ordered script */
+        if (n > 0.5f) {
+            int lane = p->key[5] == 'a' ? 0 : p->key[5] - '0';
+            if (p->key[5] == 's') {   /* the lane being edited on MAIN */
+                auto si = g_kidx.find("sel");
+                lane = si == g_kidx.end() ? 1 : (int)std::lround(w->cache[si->second].load() * 7.0f) + 1;
+            }
+            std::vector<std::pair<std::string, std::string>> st;
+            for (int l = 1; l <= 8; l++) st.push_back({"rand_l" + std::to_string(l), l == lane ? "1" : "0"});
+            st.push_back({"rand_go", "1"});
+            for (int l = 1; l <= 8; l++) st.push_back({"rand_l" + std::to_string(l), "0"});
+            queue_script(w, st, true);
+            w->release[i] = 1;
+        }
+        return;
+    }
     if (p->momentary && !std::strcmp(p->key, "all_drum")) {   /* every lane to DRUM mode; the engine then moves each note to its drum note */
         if (n > 0.5f) {
             for (int l = 1; l <= 8; l++) {
@@ -706,6 +735,30 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
     }
 }
 
+/* A fresh instance: lanes 1-4 on with four different standard Euclidean patterns, lanes 5-8 off. */
+static void set_defaults(Plugin *w) {
+    struct D { int steps, fill; };
+    static const D pat[4] = {{16, 4}, {8, 3}, {12, 5}, {16, 5}};   /* four on the floor, tresillo, E(5,12), bossa-ish */
+    auto put = [&](const std::string &key, int val, bool refresh) {
+        auto it = g_kidx.find(key);
+        if (it == g_kidx.end()) return;
+        const param_t *p = &PARAMS[it->second];
+        float n = p->nopts ? idx_norm(val, p->nopts) : (float)(val - p->min) / (p->max - p->min);
+        w->cache[it->second].store(n);
+        w->told[it->second].store(n);
+        queue_set(w, key, std::to_string(val), refresh);
+    };
+    for (int l = 1; l <= 8; l++) {
+        std::string b = "l" + std::to_string(l) + "_";
+        put(b + "enable", l <= 4 ? 1 : 0, false);
+        if (l <= 4) {
+            put(b + "steps", pat[l - 1].steps, false);
+            put(b + "fill", pat[l - 1].fill, false);
+            put(b + "shift", 0, l == 4);   /* one re-read after the last: it also fills the sel_* copies */
+        }
+    }
+}
+
 extern "C" __attribute__((visibility("default"))) AEffect *VSTPluginMain(audioMasterCallback master) {
     if (!g_log) g_log = std::fopen("/tmp/euclidier_vst.log", "a");
     Plugin *w = new Plugin();
@@ -726,6 +779,7 @@ extern "C" __attribute__((visibility("default"))) AEffect *VSTPluginMain(audioMa
         if (!PARAMS[i].momentary && !popup_is(i) && !is_virtual(i)) w->cache[i].store(get_norm_blocking(w->sockpath, i));
     for (int i = 0; i < NPARAMS; i++) if (!is_virtual(i)) w->told[i].store(w->cache[i].load());   /* the host reads these itself at load */
     w->io_thread = std::thread(io_worker, w);
+    set_defaults(w);   /* a saved project's chunk (effSetChunk) comes after this and overrides it */
 
     AEffect *e = &w->fx;
     std::memset(e, 0, sizeof *e);

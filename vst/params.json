@@ -837,68 +837,54 @@
    ]
   },
   {
-   "key": "rand_l1",
-   "name": "Lane 1",
-   "options": [
-    "OFF",
-    "ON"
-   ]
+   "key": "rand_all",
+   "name": "Randomise All",
+   "momentary": true
   },
   {
-   "key": "rand_l2",
-   "name": "Lane 2",
-   "options": [
-    "OFF",
-    "ON"
-   ]
+   "key": "rand_sel",
+   "name": "Randomise Lane",
+   "momentary": true
   },
   {
-   "key": "rand_l3",
-   "name": "Lane 3",
-   "options": [
-    "OFF",
-    "ON"
-   ]
+   "key": "rand_1",
+   "name": "Randomise 1",
+   "momentary": true
   },
   {
-   "key": "rand_l4",
-   "name": "Lane 4",
-   "options": [
-    "OFF",
-    "ON"
-   ]
+   "key": "rand_2",
+   "name": "Randomise 2",
+   "momentary": true
   },
   {
-   "key": "rand_l5",
-   "name": "Lane 5",
-   "options": [
-    "OFF",
-    "ON"
-   ]
+   "key": "rand_3",
+   "name": "Randomise 3",
+   "momentary": true
   },
   {
-   "key": "rand_l6",
-   "name": "Lane 6",
-   "options": [
-    "OFF",
-    "ON"
-   ]
+   "key": "rand_4",
+   "name": "Randomise 4",
+   "momentary": true
   },
   {
-   "key": "rand_l7",
-   "name": "Lane 7",
-   "options": [
-    "OFF",
-    "ON"
-   ]
+   "key": "rand_5",
+   "name": "Randomise 5",
+   "momentary": true
   },
   {
-   "key": "rand_l8",
-   "name": "Lane 8",
-   "options": [
-    "OFF",
-    "ON"
-   ]
+   "key": "rand_6",
+   "name": "Randomise 6",
+   "momentary": true
+  },
+  {
+   "key": "rand_7",
+   "name": "Randomise 7",
+   "momentary": true
+  },
+  {
+   "key": "rand_8",
+   "name": "Randomise 8",
+   "momentary": true
   },
   {
    "key": "all_drum",
@@ -932,70 +918,6 @@
    "momentary": true,
    "step_of": "sel_div",
    "step_delta": 1
-  },
-  {
-   "key": "l1_info",
-   "name": "L1 Info",
-   "display": "string",
-   "min": 0,
-   "max": 1,
-   "default": 0
-  },
-  {
-   "key": "l2_info",
-   "name": "L2 Info",
-   "display": "string",
-   "min": 0,
-   "max": 1,
-   "default": 0
-  },
-  {
-   "key": "l3_info",
-   "name": "L3 Info",
-   "display": "string",
-   "min": 0,
-   "max": 1,
-   "default": 0
-  },
-  {
-   "key": "l4_info",
-   "name": "L4 Info",
-   "display": "string",
-   "min": 0,
-   "max": 1,
-   "default": 0
-  },
-  {
-   "key": "l5_info",
-   "name": "L5 Info",
-   "display": "string",
-   "min": 0,
-   "max": 1,
-   "default": 0
-  },
-  {
-   "key": "l6_info",
-   "name": "L6 Info",
-   "display": "string",
-   "min": 0,
-   "max": 1,
-   "default": 0
-  },
-  {
-   "key": "l7_info",
-   "name": "L7 Info",
-   "display": "string",
-   "min": 0,
-   "max": 1,
-   "default": 0
-  },
-  {
-   "key": "l8_info",
-   "name": "L8 Info",
-   "display": "string",
-   "min": 0,
-   "max": 1,
-   "default": 0
   },
   {
    "key": "g1_8_0",
