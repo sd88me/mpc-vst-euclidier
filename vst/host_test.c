@@ -178,6 +178,30 @@ int main(void) {
     printf("all_drum -> %d of 8 lanes in DRUM mode\n", drums);
     fails += drums != 8;
 
+    /* preset round-trip: odd notes on three lanes, another lane selected, then the chunk into a fresh instance */
+    {
+        int ixs[64]; int nn = 0, isel = -1;
+        for (int i = 0; i < NPARAMS; i++) { if (!strcmp(PARAMS[i].key, "sel")) isel = i; }
+        for (int l = 1; l <= 3; l++) for (int i = 0; i < NPARAMS; i++) { char k[16]; snprintf(k, sizeof k, "l%d_note", l); if (!strcmp(PARAMS[i].key, k)) { a->setP(a, i, (float)(50 + 7 * l) / 127.0f); ixs[nn++] = i; } }
+        if (isel >= 0) a->setP(a, isel, 3.0f / 7.0f);
+        usleep(400000);
+        void *c1 = 0;
+        intptr_t n1 = a->d(a, 23, 0, 0, &c1, 0);
+        static char saved[4096]; memcpy(saved, c1, (size_t)n1);
+        AEffect *r = VSTPluginMain(host);
+        r->d(r, 24, 0, n1, saved, 0);
+        usleep(600000);
+        int bad = 0;
+        for (int i = 0; i < NPARAMS; i++) {
+            if (PARAMS[i].momentary || !strncmp(PARAMS[i].key, "sel_", 4)) continue;
+            if (!strncmp(PARAMS[i].key, "g", 1) || !strncmp(PARAMS[i].key, "c", 1) || strstr(PARAMS[i].key, "_info") || PARAMS[i].string_display) continue;
+            if (fabsf(a->getP(a, i) - r->getP(r, i)) > 0.004f) { printf("  restore differs: %s %.3f -> %.3f\n", PARAMS[i].key, a->getP(a, i), r->getP(r, i)); bad++; }
+        }
+        printf("preset round-trip: %d params differ (expect 0)\n", bad);
+        fails += bad != 0;
+        r->d(r, 1, 0, 0, 0, 0);
+    }
+
     /* chunk round-trip */
     void *chunk = 0;
     intptr_t n = a->d(a, 23, 0, 0, &chunk, 0);

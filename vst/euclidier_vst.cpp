@@ -366,8 +366,13 @@ static void io_worker(Plugin *w) {
     for (int tick = 0;; tick++) {
         w->qcv.wait_for(lk, std::chrono::milliseconds(30), [w] { return w->stop_io || !w->pending.empty() || !w->script.empty() || w->want_refresh; });
         if (w->stop_io) return;
-        auto todo = std::move(w->pending);
+        std::vector<std::pair<std::string, std::string>> todo(w->pending.begin(), w->pending.end());
         w->pending.clear();
+        /* The engine's SETs are not independent: `sel` picks the lane the sel_* keys write to, and a lane's `mode` makes the
+         * engine choose that mode's note, which would overwrite a note set before it. `pending` is unordered, so a preset or
+         * project restore must be applied in this order: sel, then modes, then everything else. */
+        auto prio = [](const std::string &k) { return k == "sel" ? 0 : (k.size() > 5 && k.compare(k.size() - 5, 5, "_mode") == 0) ? 1 : 2; };
+        std::stable_sort(todo.begin(), todo.end(), [&](const auto &x, const auto &y) { return prio(x.first) < prio(y.first); });
         auto steps = std::move(w->script);
         w->script.clear();
         bool refresh = w->want_refresh;
@@ -754,6 +759,7 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
             char *eq = std::strchr(tok, '=');
             if (!eq) continue;
             *eq = 0;
+            if (!std::strncmp(tok, "sel_", 4)) continue;   /* mirrors of the selected lane's l<N>_ keys (older presets saved them): applying them writes to whatever lane is selected */
             for (int i = 0; i < NPARAMS; i++) {
                 if (is_virtual(i) || std::strcmp(PARAMS[i].key, tok) != 0) continue;
                 w->cache[i].store(str_to_norm(&PARAMS[i], eq + 1));
@@ -761,6 +767,8 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
                 break;
             }
         }
+        { std::lock_guard<std::mutex> lk(w->qmu); w->want_refresh = true; }   /* re-read what the engine really holds (it clamps, and fills the sel_* copies) */
+        w->qcv.notify_one();
         return 1;
     }
     default: return 0;

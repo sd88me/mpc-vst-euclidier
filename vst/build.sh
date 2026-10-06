@@ -21,7 +21,8 @@ mkdir -p build
 #    vst.json "art": "html"; the mpc-vst-html-art image has Pillow + headless Chromium)
 docker build -q -t mpc-vst-html-art "$MPC_VST/tools/html_art" >/dev/null
 docker run --rm -u "$U" -e HOME=/tmp -v "$PWD":/w -w /w mpc-vst-html-art python3 make_skin.py
-docker run --rm -u "$U" -e HOME=/tmp -v "$PWD":/w -v "$MPC_VST":/mv:ro -w /w mpc-vst-html-art \
+#    SHADOW_SKIN_MPC_OS=2 (the default here) writes TUI.json in the MPC OS 2.x shape; it also draws on 3.x (docs/OS2_SKINS.md)
+docker run --rm -u "$U" -e HOME=/tmp -e SHADOW_SKIN_MPC_OS="${SHADOW_SKIN_MPC_OS:-2}" -v "$PWD":/w -v "$MPC_VST":/mv:ro -w /w mpc-vst-html-art \
   python3 /mv/tools/gen_vst.py vst.json
 
 cp "$MPC_VST/wrapper/popup.h" "$MPC_VST/wrapper/plugin_dir.h" build/   # popup flags and the plugin folder lookup, shared with mpc-vst's own wrapper

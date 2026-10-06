@@ -55,6 +55,8 @@ def put(key, v):
         return True
     if p in lanes[lane]:
         lanes[lane][p] = v
+        if p == "mode":   # like the real engine: a mode switch picks that mode's note
+            lanes[lane]["note"] = 60 if int(v) == 0 else 36 + lane
     return True
 
 
