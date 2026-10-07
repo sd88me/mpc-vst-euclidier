@@ -176,6 +176,7 @@ struct Plugin {
     volatile int release[NPARAMS] = {0};
     float open[NPARAMS] = {0};     /* popup "open" flags (popup.h): wrapper-only, never sent or saved */
     TransportGrid grid;   /* song-position anchored clock (transport_grid.h) */
+    int sent_bpm100 = 0;  /* host tempo (x100) last handed to the engine's host_bpm */
 #ifndef NO_ALSA
     snd_seq_t *seq = nullptr;
     int seq_port = -1;
@@ -557,6 +558,17 @@ static void feed_transport(Plugin *w, int32_t frames) {
                                                 kVstTempoValid | kVstPpqPosValid, 0, 0);
     bool playing = ti && (ti->flags & kVstTransportPlaying);
     w->playing.store(playing);
+    /* The engine times gates/ratchets from its BPM, which it can only estimate from pulse arrival times (a burst per block, whole
+     * milliseconds). Hand it the host tempo instead, off the audio thread via the worker; try_lock so a busy worker never blocks us. */
+    if (ti && (ti->flags & kVstTempoValid) && ti->tempo >= 20 && ti->tempo <= 400) {
+        int b100 = (int)std::lround(ti->tempo * 100.0);
+        if (b100 != w->sent_bpm100 && w->qmu.try_lock()) {
+            w->pending["host_bpm"] = std::to_string(b100);
+            w->qcv.notify_one();
+            w->qmu.unlock();
+            w->sent_bpm100 = b100;
+        }
+    }
     AlsaClock clk{w};
     w->grid.block(clk, playing, ti ? ti->ppqPos : 0.0, ti ? ti->tempo : 120.0, ti ? ti->sampleRate : 44100.0, frames);
 }
