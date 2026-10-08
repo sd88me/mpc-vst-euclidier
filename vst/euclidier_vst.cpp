@@ -579,6 +579,12 @@ static void processReplacing(AEffect *e, float **in, float **out, int32_t n) {
  * (preset_load/preset_save mutate every lane; rand_go re-randomizes whichever
  * lanes are selected) -- see euclidier.cpp's ctrlSet(). Everything else's SET
  * only ever touches its own key. */
+/* Write-only engine actions (the engine ignores the value and just acts): Randomize, Load/Save the selected bank slot. They are
+ * triggers, not state: they must never be saved in a chunk or replayed from one (a restore fired all three on every project or
+ * preset load -- randomised lanes, a patch loaded over them, the bank slot overwritten), and a host setting one to 0 is not a press. */
+static bool is_trigger_key(const char *key) {
+    return !std::strcmp(key, "rand_go") || !std::strcmp(key, "preset_load") || !std::strcmp(key, "preset_save");
+}
 static bool triggers_refresh(const char *key) {
     return !std::strcmp(key, "preset_load") || !std::strcmp(key, "rand_go");
 }
@@ -653,7 +659,7 @@ static void setParameter(AEffect *e, int32_t i, float n) {
         }
         return;
     }
-    if (p->momentary) {
+    if (p->momentary || is_trigger_key(p->key)) {
         if (n > 0.5f) {
             queue_set(w, p->key, "1", triggers_refresh(p->key));
             w->release[i] = 1;
@@ -741,7 +747,7 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
         /* From cache -- no socket round-trip, consistent with get/setParameter. */
         std::string s;
         for (int i = 0; i < NPARAMS; i++) {
-            if (PARAMS[i].momentary || popup_is(i) || is_virtual(i)) continue;
+            if (PARAMS[i].momentary || popup_is(i) || is_virtual(i) || is_trigger_key(PARAMS[i].key)) continue;
             char buf[32];
             norm_to_str(&PARAMS[i], w->cache[i].load(), buf, sizeof buf);
             s += PARAMS[i].key; s += '='; s += buf; s += ';';
@@ -759,6 +765,7 @@ static intptr_t dispatcher(AEffect *e, int32_t op, int32_t idx, intptr_t v, void
             char *eq = std::strchr(tok, '=');
             if (!eq) continue;
             *eq = 0;
+            if (is_trigger_key(tok)) continue;   /* presets saved before this fix hold rand_go=0;preset_load=0;preset_save=0; -- replaying them fired all three */
             if (!std::strncmp(tok, "sel_", 4)) continue;   /* mirrors of the selected lane's l<N>_ keys (older presets saved them): applying them writes to whatever lane is selected */
             for (int i = 0; i < NPARAMS; i++) {
                 if (is_virtual(i) || std::strcmp(PARAMS[i].key, tok) != 0) continue;

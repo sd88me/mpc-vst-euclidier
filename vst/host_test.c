@@ -3,10 +3,13 @@
  * build of the same source), talks to it over its real control socket, and
  * drives a synthesized transport, same shape as force-acid/host_test.c. */
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
 #include <unistd.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 #include "params.h"
 
 typedef struct AEffect AEffect;
@@ -40,6 +43,15 @@ static intptr_t host(AEffect *e, int32_t op, int32_t idx, intptr_t v, void *p, f
     if (op == 0 && idx >= 0 && idx < NPARAMS) automated[idx]++;   /* audioMasterAutomate */
     if (op == 7) return (intptr_t)&g_ti;   /* audioMasterGetTime */
     return 0;
+}
+
+static int engine_fired(const char *sock) {   /* how often the stand-in engine had a write-only trigger SET (-1: no answer) */
+    int fd = socket(AF_UNIX, SOCK_STREAM, 0);
+    struct sockaddr_un a; memset(&a, 0, sizeof a); a.sun_family = AF_UNIX; strncpy(a.sun_path, sock, sizeof a.sun_path - 1);
+    if (connect(fd, (struct sockaddr *)&a, sizeof a) < 0) { close(fd); return -1; }
+    const char *q = "GET fired\n"; send(fd, q, strlen(q), 0);
+    char r[32] = {0}; int n = recv(fd, r, sizeof r - 1, 0); close(fd);
+    return n > 0 ? atoi(r) : -1;
 }
 
 int main(void) {
@@ -200,6 +212,25 @@ int main(void) {
         printf("preset round-trip: %d params differ (expect 0)\n", bad);
         fails += bad != 0;
         r->d(r, 1, 0, 0, 0, 0);
+    }
+
+    /* a restore must never fire the engine's write-only triggers (Randomize, bank Load, bank Save): they are actions, not state.
+     * Presets saved by older versions contain them (rand_go=0;preset_load=0;preset_save=0;), so those are skipped on load too. */
+    {
+        void *c0 = 0; intptr_t n0 = a->d(a, 23, 0, 0, &c0, 0);
+        printf("chunk holds triggers: %s\n", (strstr((char *)c0, "rand_go") || strstr((char *)c0, "preset_load") || strstr((char *)c0, "preset_save")) ? "YES" : "no");
+        if (strstr((char *)c0, "rand_go") || strstr((char *)c0, "preset_load") || strstr((char *)c0, "preset_save")) { printf("FAIL triggers saved in the chunk\n"); fails++; }
+        static char old_chunk[4096];
+        snprintf(old_chunk, sizeof old_chunk, "%s;rand_go=0;preset_load=0;preset_save=0;", (char *)c0);   /* what an older version saved */
+        char sock[96]; snprintf(sock, sizeof sock, "/tmp/euclidier_vst_%d_1.sock", (int)getpid());   /* instance b */
+        int before = engine_fired(sock);
+        b->d(b, 24, 0, (intptr_t)strlen(old_chunk) + 1, old_chunk, 0);
+        for (int k = 0; k < 40; k++) { usleep(10000); b->pr(b, 0, out, 128); }
+        usleep(300000);
+        int after = engine_fired(sock);
+        printf("restoring an old chunk fired %d engine trigger(s) (expect 0)\n", after - before);
+        if (before < 0 || after != before) { printf("FAIL restore fired write-only triggers\n"); fails++; }
+        (void)n0;
     }
 
     /* chunk round-trip */

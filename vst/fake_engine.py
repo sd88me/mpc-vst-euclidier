@@ -6,6 +6,7 @@ import os, socket, sys, time
 ctrl = sys.argv[sys.argv.index("--ctrl-sock") + 1]
 lanes = [dict(enable=1, steps=16, fill=4, shift=0, loop=0, note=60, div=0, gate=50, ch=1, vel=100, velh=0, mode=0) for _ in range(8)]
 state = dict(sel=0, preset=0)
+fired = {"n": 0}   # how many times a write-only trigger (rand_go, preset_load, preset_save) was SET: a restore must not fire any
 t0 = time.time()
 mask = [0] * 8
 
@@ -20,6 +21,8 @@ def get(key):
         return str(state[key])
     if key == "transport":
         return "RUN 120"
+    if key == "fired":
+        return str(fired["n"])
     if key.startswith("sel_"):
         lane, p = state["sel"], key[4:]
     elif key[0] == "l" and key[2] == "_":
@@ -41,7 +44,11 @@ def put(key, v):
     if key.startswith("rand_l") and len(key) == 7:   # the randomise lane flags
         mask[int(key[6]) - 1] = v
         return True
+    if key in ("preset_load", "preset_save"):   # the real engine loads / overwrites a bank slot whatever the value
+        fired["n"] += 1
+        return True
     if key == "rand_go":   # randomise the flagged lanes (none flagged: all); here that just sets steps to 7
+        fired["n"] += 1
         for n in range(8):
             if any(mask) and not mask[n]:
                 continue
