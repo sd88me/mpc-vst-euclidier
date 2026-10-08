@@ -11,6 +11,7 @@
 #include "eqseq.h"
 #include <unistd.h>
 #include <sys/stat.h>
+#include <atomic>
 #include <chrono>
 #include <iostream>
 #include <sys/time.h>
@@ -48,6 +49,7 @@ bool velSense = true;
 bool receiveNotes = true;
 bool autosync = true;
 float BPM = 120.00;
+std::atomic<float> hostBPM{0.0f}; // MPC-VST: tempo the plugin wrapper read from the host (SET host_bpm <bpm*100>); 0 = estimate from the pulses
 int getOffset();
 float syncDiv = 3;
 bool doSync = false; // master-sync quantize (CC 50); off = edits apply immediately (safe: step position is stateless)
@@ -910,6 +912,11 @@ void pulse() // used to compute bpm and send clock message to sequencer for sync
         }
         float bpm = (avg / cnt);
         BPM = bpm;
+        // The estimate above times pulses that arrive in a burst per audio block, in whole milliseconds: noisy. The plugin
+        // wrapper knows the real tempo; use it when it has told us (gate lengths and ratchets scale with BPM).
+        float hb = hostBPM.load();
+        if (hb >= 20.0f && hb <= 400.0f)
+            BPM = hb;
     }
 
     updateBPM(BPM);
@@ -1586,6 +1593,7 @@ static string ctrlGet(const string &key)
 static bool ctrlSet(const string &key, int v)
 {
     if (key == "sel") { selLane = limit(v, 0, 7); return true; }
+    if (key == "host_bpm") { hostBPM.store(v / 100.0f); return true; }   // MPC-VST: tempo*100 from the host (0 = back to estimating)
     if (key == "preset") { ctrlMidi(20, limit(v, 0, 127)); return true; }
     if (key == "preset_load") { ctrlMidi(29, 127); return true; }
     if (key == "preset_save") { ctrlMidi(30, 127); return true; }

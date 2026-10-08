@@ -39,6 +39,11 @@ docker run --rm -v "$PWD/..":/b -w /b/vst gcc:12 bash -euxc '
       build/euclidier-x86.so -ldl
   chown -R '"$U"' build
 '
+echo "-- run grid_test (song-position clock vs a model of the engine) --"
+docker run --rm -v "$PWD/..":/b -w /b/vst gcc:12 bash -euxc '
+  g++ -O1 -g -fsanitize=address,undefined -std=c++17 -Wall -Wextra -o /tmp/grid_test grid_test.cpp
+  /tmp/grid_test
+'
 echo "-- run host_test (spawns build/euclidier-x86) --"
 docker run --rm -v "$PWD/..":/b -w /b/vst -e EUCLIDIER_BIN=/b/vst/fake_engine.py \
   -e LD_LIBRARY_PATH=/b/vst/build -e ASAN_OPTIONS=detect_leaks=0 gcc:12 bash -euxc '

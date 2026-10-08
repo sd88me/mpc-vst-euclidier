@@ -64,6 +64,7 @@
 #include "params.h"
 #include "popup.h"    /* mpc-vst-plugins wrapper/popup.h, copied into build/ by build.sh */
 #include "plugin_dir.h"   /* mpc-vst-plugins wrapper/plugin_dir.h: the folder this .so was loaded from */
+#include "transport_grid.h"   /* song-position anchored clock: why and how in that header */
 
 extern char **environ;
 
@@ -174,8 +175,8 @@ struct Plugin {
     pid_t child = -1;
     volatile int release[NPARAMS] = {0};
     float open[NPARAMS] = {0};     /* popup "open" flags (popup.h): wrapper-only, never sent or saved */
-    double last_ppq = 0.0;
-    bool was_playing = false;
+    TransportGrid grid;   /* song-position anchored clock (transport_grid.h) */
+    int sent_bpm100 = 0;  /* host tempo (x100) last handed to the engine's host_bpm */
 #ifndef NO_ALSA
     snd_seq_t *seq = nullptr;
     int seq_port = -1;
@@ -516,6 +517,18 @@ static void alsa_send_byte(Plugin *w, unsigned char b) {
     else if (b == 0xFC) ev.type = SND_SEQ_EVENT_STOP;
     snd_seq_event_output_direct(w->seq, &ev);
 }
+static void alsa_send_songpos(Plugin *w, int s16) {   /* Song Position Pointer: 16th notes since the start of the song */
+    if (!w->seq || w->seq_port < 0) return;
+    if (w->dest_client < 0 && !find_engine_input_port(w->engine_client, w->dest_client, w->dest_port)) return;
+    snd_seq_event_t ev;
+    snd_seq_ev_clear(&ev);
+    snd_seq_ev_set_source(&ev, w->seq_port);
+    snd_seq_ev_set_dest(&ev, w->dest_client, w->dest_port);
+    snd_seq_ev_set_direct(&ev);
+    ev.type = SND_SEQ_EVENT_SONGPOS;
+    ev.data.control.value = s16;
+    snd_seq_event_output_direct(w->seq, &ev);
+}
 static void alsa_close(Plugin *w) {
     if (w->seq) snd_seq_close(w->seq);
     w->seq = nullptr;
@@ -525,31 +538,39 @@ static void alsa_close(Plugin *w) {
 #else
 static void alsa_open(Plugin *) {}
 static void alsa_send_byte(Plugin *, unsigned char) {}
+static void alsa_send_songpos(Plugin *, int) {}
 static void alsa_close(Plugin *) {}
 #endif
 
 /* ---------------------------------------------------------------------------
- * Transport / clock synthesis: audioMasterGetTime -> synthetic 24-PPQN clock
- * sent to the child over ALSA seq, same math as acid_vst.cpp's feed_transport.
+ * Transport: audioMasterGetTime -> 24-PPQN clock + Song Position Pointers
+ * sent to the child over ALSA seq (transport_grid.h: steps follow the song position, not a pulse count).
  * ------------------------------------------------------------------------- */
-static void feed_transport(Plugin *w) {
+struct AlsaClock {
+    Plugin *w;
+    void start() { alsa_send_byte(w, 0xFA); }
+    void stop() { alsa_send_byte(w, 0xFC); }
+    void songpos(long s16) { alsa_send_songpos(w, (int)(s16 & 0x3FFF)); }
+    void pulse() { alsa_send_byte(w, 0xF8); }
+};
+static void feed_transport(Plugin *w, int32_t frames) {
     VstTimeInfo *ti = (VstTimeInfo *)w->master(&w->fx, audioMasterGetTime, 0,
                                                 kVstTempoValid | kVstPpqPosValid, 0, 0);
     bool playing = ti && (ti->flags & kVstTransportPlaying);
-
-    if (playing && !w->was_playing) { w->last_ppq = ti->ppqPos; alsa_send_byte(w, 0xFA); }
-    else if (!playing && w->was_playing) alsa_send_byte(w, 0xFC);
-    w->was_playing = playing;
     w->playing.store(playing);
-
-    if (playing && ti) {
-        const double step = 1.0 / 24.0;
-        double start = w->last_ppq, end = ti->ppqPos;
-        if (end < start) start = end;
-        double next = std::ceil(start / step) * step;
-        for (; next < end + 1e-9; next += step) alsa_send_byte(w, 0xF8);
-        w->last_ppq = ti->ppqPos;
+    /* The engine times gates/ratchets from its BPM, which it can only estimate from pulse arrival times (a burst per block, whole
+     * milliseconds). Hand it the host tempo instead, off the audio thread via the worker; try_lock so a busy worker never blocks us. */
+    if (ti && (ti->flags & kVstTempoValid) && ti->tempo >= 20 && ti->tempo <= 400) {
+        int b100 = (int)std::lround(ti->tempo * 100.0);
+        if (b100 != w->sent_bpm100 && w->qmu.try_lock()) {
+            w->pending["host_bpm"] = std::to_string(b100);
+            w->qcv.notify_one();
+            w->qmu.unlock();
+            w->sent_bpm100 = b100;
+        }
     }
+    AlsaClock clk{w};
+    w->grid.block(clk, playing, ti ? ti->ppqPos : 0.0, ti ? ti->tempo : 120.0, ti ? ti->sampleRate : 44100.0, frames);
 }
 
 /* ---------------------------------------------------------------------------
@@ -558,7 +579,7 @@ static void feed_transport(Plugin *w) {
 static void processReplacing(AEffect *e, float **in, float **out, int32_t n) {
     (void)in;
     Plugin *w = (Plugin *)e->object;
-    feed_transport(w);
+    feed_transport(w, n);
     int budget = 96;   /* host calls per block: a lane resize touches ~100 cells, spread over a few blocks */
     for (int i : g_vlist) {   /* display-only params first, then any real param the engine changed behind the host's back */
         if (budget <= 0) break;
