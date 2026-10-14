@@ -290,6 +290,8 @@ int EQSEQ::getVel() // computes step velocity based on base velocity and humaniz
         int max = std::max(this->vel, this->velh);
         int min = std::min(this->vel, this->velh);
         int diff = (max - min);
+        if (diff == 0)
+            return min;
         int val = min + (rand() % diff);
         while (diff > 10 && std::abs(val - diff) < 5)
         {

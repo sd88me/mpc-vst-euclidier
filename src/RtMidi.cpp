@@ -1516,6 +1516,14 @@ static void *alsaMidiHandler( void *ptr )
   MidiInApi::MidiMessage message;
   int poll_fd_count;
   struct pollfd *poll_fds;
+  int cachedClockClient = -1;
+  bool cachedClockOk = false;
+  // snd_seq_client_info_alloca() uses the current function's stack frame.
+  // Doing it inside the event loop grows the stack on every source change
+  // (MPC and the plugin clock alternate continuously) until the thread
+  // eventually dies with SIGSEGV. Allocate the lookup buffer exactly once.
+  snd_seq_client_info_t *clockClientInfo;
+  snd_seq_client_info_alloca( &clockClientInfo );
 
   snd_seq_event_t *ev;
   int result;
@@ -1572,16 +1580,20 @@ static void *alsaMidiHandler( void *ptr )
     if ( !rtmidi_clock_from.empty() &&
          ( ev->type == SND_SEQ_EVENT_CLOCK || ev->type == SND_SEQ_EVENT_START || ev->type == SND_SEQ_EVENT_CONTINUE ||
            ev->type == SND_SEQ_EVENT_STOP || ev->type == SND_SEQ_EVENT_SONGPOS || ev->type == SND_SEQ_EVENT_TICK ) ) {
-      static int cachedClient = -1;
-      static bool cachedOk = false;
-      if ( ev->source.client != cachedClient ) {   // look the sender up once per client
-        snd_seq_client_info_t *ci;
-        snd_seq_client_info_alloca( &ci );
-        cachedOk = snd_seq_get_any_client_info( apiData->seq, ev->source.client, ci ) >= 0 &&
-                   rtmidi_clock_from == snd_seq_client_info_get_name( ci );
-        cachedClient = ev->source.client;
+      if ( ev->source.client != cachedClockClient ) {   // look the sender up once per client
+        const int infoResult = snd_seq_get_any_client_info( apiData->seq, ev->source.client, clockClientInfo );
+        const char *clientName = infoResult >= 0 ? snd_seq_client_info_get_name( clockClientInfo ) : 0;
+        cachedClockOk = clientName && rtmidi_clock_from == clientName;
+        cachedClockClient = ev->source.client;
       }
-      if ( !cachedOk ) continue;
+      if ( !cachedClockOk ) {
+        // snd_seq_event_input() hands ownership of every successful event to
+        // the caller.  MPC also broadcasts its own clock to this port, so this
+        // path runs continuously; skipping snd_seq_free_event() here leaked
+        // one ALSA event per rejected pulse until the engine became unstable.
+        snd_seq_free_event( ev );
+        continue;
+      }
     }
 
     // This is a bit weird, but we now have to decode an ALSA MIDI
