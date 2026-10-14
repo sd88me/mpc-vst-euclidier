@@ -910,8 +910,8 @@ void pulse() // used to compute bpm and send clock message to sequencer for sync
             avg += localavg;
             cnt++;
         }
-        float bpm = (avg / cnt);
-        BPM = bpm;
+        if (cnt > 0)
+            BPM = (float)(avg / cnt);
         // The estimate above times pulses that arrive in a burst per audio block, in whole milliseconds: noisy. The plugin
         // wrapper knows the real tempo; use it when it has told us (gate lengths and ratchets scale with BPM).
         float hb = hostBPM.load();
@@ -971,7 +971,7 @@ unsigned long long ms() // ms elapsed since app started.
 }
 void updateBPM(float bpm) // sends the computed bpm to all sequencers
 {
-    if (isinf(bpm))
+    if (!std::isfinite(bpm) || bpm <= 0.0f)
         return;
 
     for (char i = 0; i < SEQS; i++)
