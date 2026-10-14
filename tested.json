@@ -16,5 +16,11 @@
   "device": "Akai Force",
   "firmware": "MPC OS 3.9.1",
   "date": "2026-10-11"
+ },
+ {
+  "version": "1.0.8",
+  "device": "Akai Force",
+  "firmware": "MPC OS 3.9.1",
+  "date": "2026-10-14"
  }
 ]
